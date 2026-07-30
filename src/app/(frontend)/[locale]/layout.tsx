@@ -6,6 +6,8 @@ import { setRequestLocale } from 'next-intl/server'
 import { Inter, Poppins, Hind_Siliguri, Noto_Sans_Bengali } from 'next/font/google'
 
 import { routing } from '@/i18n/routing'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
 import './globals.css'
 
 const inter = Inter({
@@ -69,7 +71,13 @@ export default async function LocaleLayout(props: {
     >
       <body>
         <NextIntlClientProvider>
-          <main>{props.children}</main>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main id="main-content" className="flex-1">
+              {props.children}
+            </main>
+            <Footer />
+          </div>
         </NextIntlClientProvider>
       </body>
     </html>

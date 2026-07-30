@@ -1,8 +1,7 @@
 import React from 'react'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
 
-import { LanguageToggle } from '@/components/LanguageToggle'
-import { ThemeToggle } from '@/components/ThemeToggle'
+import { Reveal } from '@/components/ui/Reveal'
 
 /**
  * Temporary landing placeholder — proves i18n routing, the language toggle,
@@ -23,20 +22,15 @@ export default async function HomePage(props: { params: Promise<{ locale: string
   ]
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-8 px-6 py-16">
-      <div className="flex items-center gap-3">
-        <LanguageToggle />
-        <ThemeToggle />
-      </div>
-
-      <div className="text-center max-w-2xl">
+    <div className="flex flex-col items-center justify-center gap-8 px-6 py-28">
+      <Reveal className="text-center max-w-2xl">
         <p className="text-sm font-semibold uppercase tracking-widest text-mist-green mb-4">
           {t('institution')}
         </p>
         <h1 className="text-5xl font-bold mb-3">{t('name')}</h1>
         <p className="text-2xl text-navy-700 mb-6">{t('tagline')}</p>
         <p className="text-ink-soft leading-relaxed">{t('underConstruction')}</p>
-      </div>
+      </Reveal>
 
       <div className="flex gap-4">
         {swatches.map((s) => (

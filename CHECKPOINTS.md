@@ -131,19 +131,20 @@
 ## PHASE 3 — Public Site Layout & Design System
 
 ### CP-3.1 · Global layout
-- [ ] Header: logo, nav (Home, About, The App, News, Gallery, Contact), language toggle; mobile hamburger menu
-- [ ] Footer: MIST logo + link, contact info, social links, privacy note link
-- [ ] 404 page (localized)
+- [x] Sticky header: logo + wordmark, full nav (Home, About, The App, News, Gallery, Contact), language + theme toggles, active-page highlighting, mobile hamburger with accessible disclosure menu (aria-expanded/controls), skip-to-content link
+- [x] Footer: brand + MIST affiliation and link, sitemap, Privacy & Child Safety link, GitHub link, copyright
+- [x] Localized 404 page (EN/BN) with back-home CTA; stub "coming soon" pages for all nav routes so navigation never dead-ends (replaced in Phase 4)
 
-✅ Verify: layout renders on mobile (360px), tablet, and desktop widths without overflow.
+✅ Verify: all routes 200 (/en, /bn, /en/design, stubs); unknown URL → 404; layout screenshotted at 390px (menu open) and 1280px with no overflow. ✔ PASSED 2026-07-30
 
 ### CP-3.2 · Design system components
-- [ ] Buttons, cards, section headings, badge (news category), stat tile, quote/testimonial block, timeline item, partner logo row, YouTube embed component (lazy-loaded, no layout shift)
-- [ ] Pastel accents on calm surfaces per design guidelines (pastels are accents, not the theme); light + dark mode on every component
-- [ ] Motion system: fade-in-on-scroll reveal, animated stat counters, micro-interactions — all ≤400ms ease-out and fully disabled under `prefers-reduced-motion`
-- [ ] Focus states and keyboard navigation on all interactive components
+- [x] Button (primary/secondary/ghost, md/lg, link+anchor variants), Card, SectionHeading (khaki eyebrow + confident title + lede), Badge with category-tone mapping, StatTile (count-up on first view), QuoteBlock, TimelineItem, YouTubeEmbed (lazy thumbnail — iframe loads only on play, aspect-ratio box → no layout shift), Reveal (fade-in-on-scroll wrapper)
+- [x] Pastels used as accents on calm surfaces; every component tokenized → works in light + dark automatically
+- [x] Motion system: 400ms ease-out reveals (once per element), 1s eased stat counters, hover micro-interactions — all disabled under `prefers-reduced-motion` (global CSS guard + JS checks)
+- [x] Global `:focus-visible` outline; skip link; aria labels on icon buttons
+- [x] Demo page at `/en/design` + `/bn/design` (internal, unlinked)
 
-✅ Verify: a components demo page shows all variants in EN + BN, light + dark; with reduced motion enabled, zero animation plays.
+✅ Verify: demo page renders all variants; reduced-motion emulation → `.reveal` opacity 1 immediately (no animation); console clean. ✔ PASSED 2026-07-30 — partner logo row lands with real partner data in CP-4.1
 
 ---
 

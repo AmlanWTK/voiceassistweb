@@ -12,12 +12,16 @@
     "app": "The App",
     "news": "News & Updates",
     "gallery": "Gallery",
-    "contact": "Contact"
+    "contact": "Contact",
+    "skipToContent": "Skip to content",
+    "menu": "Menu"
   },
   "footer": {
     "affiliation": "A project of the Department of Biomedical Engineering, Military Institute of Science and Technology (MIST)",
     "privacy": "Privacy & Child Safety",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "sitemapLabel": "Explore",
+    "trustLabel": "Trust"
   },
   "language": {
     "label": "Language",
@@ -28,5 +32,14 @@
     "label": "Theme",
     "light": "Switch to light mode",
     "dark": "Switch to dark mode"
+  },
+  "comingSoon": {
+    "title": "This page is on its way",
+    "body": "We are building this section right now. Meanwhile, explore the rest of the site or follow our news for updates."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you are looking for doesn't exist or has moved.",
+    "backHome": "Back to home"
   }
 }
