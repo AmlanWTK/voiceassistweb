@@ -12,6 +12,15 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  // Content localization (CP-1.4): every localized field stores EN + BN
+  localization: {
+    locales: [
+      { label: 'English', code: 'en' },
+      { label: 'বাংলা (Bangla)', code: 'bn' },
+    ],
+    defaultLocale: 'en',
+    fallback: true,
+  },
   admin: {
     user: Users.slug,
     importMap: {

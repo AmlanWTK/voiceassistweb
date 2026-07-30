@@ -6,6 +6,8 @@
 
 **Legend:** `CP` = Checkpoint · ✅ Verify = the proof required before moving on
 
+> **Design constitution:** `content/design-guidelines.md` (adopted 2026-07-30) is binding for all design/content work — story-driven pages, premium simplicity, professional-not-childish, children as the heroes, accessibility by design, reduced-motion support. Every Phase 3–6 checkpoint is additionally checked against it.
+
 ---
 
 ## PHASE 0 — Decisions & Content Inputs
@@ -24,6 +26,7 @@
 - [ ] Reference screenshots of mist.ac.bd saved for tone alignment (tone analysis documented in design-tokens.md; screenshots optional, to add to `content/assets/mist-reference/`)
 
 ✅ Verify: `content/design-tokens.md` lists hex codes and font names. ✔ PASSED
+- [x] *(added 2026-07-30)* Dark mode: full dark token set + `ThemeToggle` (localStorage + OS preference, pre-paint script, no flash) — verified with screenshots in both modes; persists across reload
 
 ### CP-0.3 · Launch content gathered (can run in parallel with build)
 - [ ] About text drafted (EN + BN)
@@ -64,12 +67,13 @@
 ✅ Verify: editor listing users returned only self; editor creating a user → 403; editor self-promotion to admin ignored (role stayed `editor`); admin sees all users. ✔ PASSED 2026-07-30
 
 ### CP-1.4 · Internationalization skeleton
-- [ ] next-intl configured with `en` and `bn` locales, routing `/en/...` and `/bn/...` (default `en`)
-- [ ] Payload localization enabled for `en` + `bn` on text fields
-- [ ] Language toggle component in header working
-- [ ] Bangla webfont loading via `next/font` and rendering correctly
+- [x] next-intl configured with `en`/`bn` locales; routes moved to `(frontend)/[locale]/`; `/` 307-redirects to `/en`; middleware excludes `/admin` + `/api`
+- [x] Payload localization enabled (`en` + `bn`, fallback to en); Media `alt` is the first localized field
+- [x] `LanguageToggle` component working — links to the same path in the other locale, active locale highlighted
+- [x] Bangla strings render natively (messages/bn.json written in natural cholito Bangla); `lang` attribute correct per locale (`lang="bn"` on Bangla pages)
+- [x] Message catalogs: `messages/en.json` + `messages/bn.json` (site, nav, footer, language namespaces)
 
-✅ Verify: toggling switches a sample headline between English and Bangla with correct glyph rendering.
+✅ Verify: `/en` and `/bn` both 200; toggling switches the headline EN ⇄ BN with correct glyphs (screenshots); admin panel unaffected (200). ✔ PASSED 2026-07-30 — **PHASE 1 COMPLETE**
 
 ---
 
@@ -107,7 +111,15 @@
 
 ✅ Verify: editing hero text in admin changes it on the site without a code deploy.
 
-### CP-2.6 · Contact Requests collection
+### CP-2.6 · Trust & story collections *(added by design guidelines)*
+- [ ] Partners/Collaborators: name, logo, URL, type (institution/NGO/government/sponsor), order
+- [ ] Success Stories / Testimonials: quote* , person (parent/teacher/therapist), child-safe photo (consent-gated), linked school/event
+- [ ] Milestones (project timeline): date, title*, description*, type (research/release/outreach/award)
+- [ ] Publications: title, authors, venue, year, link/DOI
+
+✅ Verify: one seed entry of each type renders via a test query; consent validation blocks an unconsented story photo.
+
+### CP-2.7 · Contact Requests collection
 - [ ] Fields: name, organization, email/phone, message, type (contact / device request), status (new/replied/closed)
 - [ ] Public API endpoint (or server action) with spam protection (honeypot + rate limit)
 - [ ] Email notification on new submission
@@ -126,24 +138,31 @@
 ✅ Verify: layout renders on mobile (360px), tablet, and desktop widths without overflow.
 
 ### CP-3.2 · Design system components
-- [ ] Buttons, cards, section headings, badge (news category), stat tile, YouTube embed component (lazy-loaded, no layout shift)
-- [ ] Pastel + institutional palette applied via Tailwind theme tokens
+- [ ] Buttons, cards, section headings, badge (news category), stat tile, quote/testimonial block, timeline item, partner logo row, YouTube embed component (lazy-loaded, no layout shift)
+- [ ] Pastel accents on calm surfaces per design guidelines (pastels are accents, not the theme); light + dark mode on every component
+- [ ] Motion system: fade-in-on-scroll reveal, animated stat counters, micro-interactions — all ≤400ms ease-out and fully disabled under `prefers-reduced-motion`
 - [ ] Focus states and keyboard navigation on all interactive components
 
-✅ Verify: a components demo page shows all variants in both EN and BN.
+✅ Verify: a components demo page shows all variants in EN + BN, light + dark; with reduced motion enabled, zero animation plays.
 
 ---
 
 ## PHASE 4 — Public Pages
 
-### CP-4.1 · Home page
-- [ ] Hero: app name, tagline (EN/BN), device mockup with real app screenshots, primary CTA
-- [ ] Stats row (devices handed over, children reached, word categories, languages) — editable from admin
-- [ ] Latest 3 news cards (auto from Posts)
-- [ ] Featured video section
-- [ ] Final CTA band (Request a device / Contact)
+### CP-4.1 · Home page — 11-section story flow (per design guidelines)
+- [ ] 1. Hero: powerful mission statement (EN/BN), authentic photo/device mockup, primary CTA
+- [ ] 2. Impact statistics (animated counters, CMS-editable)
+- [ ] 3. Why this project matters (the challenge, told with dignity)
+- [ ] 4. Our solution (the research journey, not a feature list)
+- [ ] 5. Interactive application showcase (screenshots/screen recordings)
+- [ ] 6. Research and innovation (MIST BME, methodology)
+- [ ] 7. Success stories (from Success Stories collection)
+- [ ] 8. Latest news and announcements (auto from Posts)
+- [ ] 9. Device distribution and outreach activities
+- [ ] 10. Partners and collaborators (logo row)
+- [ ] 11. Call to action (request a device / follow the journey)
 
-✅ Verify: all content sourced from CMS (no hardcoded text); Lighthouse performance ≥ 90 locally.
+✅ Verify: sections flow as a narrative; all content CMS-sourced; Lighthouse performance ≥ 90; reads correctly in EN and BN, light and dark.
 
 ### CP-4.2 · About page
 - [ ] Project story + mission (localized, CMS-driven)
@@ -153,12 +172,13 @@
 
 ✅ Verify: adding a team member in admin appears on the page immediately (or after revalidation).
 
-### CP-4.3 · The App (Features) page
-- [ ] Feature sections mirroring the real app: communication boards (Core Words, Basic Needs, Emotions, People, Places, Verbs, Questions, Prepositions, Time, Animals, Colors, Clothes), Bangla+English study materials, writing canvas, custom words, favorites, offline use, Bengali TTS
-- [ ] Screenshot/screen-recording per major feature
-- [ ] "How devices reach kids" section explaining the activation + handover model
+### CP-4.3 · The App page — told as a story (challenge → solution → showcase)
+- [ ] Narrative opening: the communication challenge special children face, and the research motivation
+- [ ] The solution: communication boards (Core Words, Basic Needs, Emotions, People, Places, Verbs, Questions, Prepositions, Time, Animals, Colors, Clothes), Bangla+English study materials, writing canvas, custom words, favorites, offline use, Bengali TTS — presented as capabilities in the story, not a feature list
+- [ ] Screenshot/screen-recording per major capability
+- [ ] "How devices reach kids": activation + handover model, with outreach photos
 
-✅ Verify: every feature named on the page actually exists in the app (cross-check against `lib/features/`).
+✅ Verify: every capability named on the page actually exists in the app (cross-check against `lib/features/`); page reads as narrative per design guidelines.
 
 ### CP-4.4 · News & Updates
 - [ ] Listing page with category filter (Handover Events / App Updates / Milestones) + pagination

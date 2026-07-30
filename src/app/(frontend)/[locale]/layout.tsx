@@ -1,5 +1,11 @@
 import React from 'react'
+import { notFound } from 'next/navigation'
+import { NextIntlClientProvider, hasLocale } from 'next-intl'
+import { setRequestLocale } from 'next-intl/server'
 import { Inter, Poppins, Hind_Siliguri, Noto_Sans_Bengali } from 'next/font/google'
+
+import { routing } from '@/i18n/routing'
+import { Providers } from '@/components/Providers'
 import './globals.css'
 
 const inter = Inter({
@@ -35,16 +41,32 @@ export const metadata = {
     'A free, offline, Bangla-first AAC app that helps special children communicate, learn, and be heard. A project of the Department of Biomedical Engineering, MIST.',
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }))
+}
+
+export default async function LocaleLayout(props: {
+  children: React.ReactNode
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await props.params
+  if (!hasLocale(routing.locales, locale)) {
+    notFound()
+  }
+  setRequestLocale(locale)
 
   return (
     <html
-      lang="en"
+      lang={locale}
       className={`${inter.variable} ${poppins.variable} ${hindSiliguri.variable} ${notoSansBengali.variable}`}
+      suppressHydrationWarning
     >
       <body>
-        <main>{children}</main>
+        <Providers>
+          <NextIntlClientProvider>
+            <main>{props.children}</main>
+          </NextIntlClientProvider>
+        </Providers>
       </body>
     </html>
   )

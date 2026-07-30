@@ -1,0 +1,32 @@
+{
+  "site": {
+    "name": "Voice Assistant",
+    "tagline": "Giving every child a voice.",
+    "institution": "MIST · Department of Biomedical Engineering",
+    "underConstruction": "The official website for the Voice Assistant AAC app is under construction. News, device-handover updates, and stories are coming soon.",
+    "visitMist": "Visit MIST"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "app": "The App",
+    "news": "News & Updates",
+    "gallery": "Gallery",
+    "contact": "Contact"
+  },
+  "footer": {
+    "affiliation": "A project of the Department of Biomedical Engineering, Military Institute of Science and Technology (MIST)",
+    "privacy": "Privacy & Child Safety",
+    "rights": "All rights reserved."
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "bn": "বাংলা"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Switch to light mode",
+    "dark": "Switch to dark mode"
+  }
+}

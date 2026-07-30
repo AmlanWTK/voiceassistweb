@@ -43,6 +43,23 @@ Same low-saturation rotation the app uses, so the site visually *is* the app:
 
 Contrast rules: body text `ink` on `bg`/`surface` (AAA); white text only on `navy-900`, `primary`, `green-700` (all ≥ 4.5:1 AA). Pastel backgrounds always carry `navy-900` or `ink` text — never white.
 
+## Dark mode
+
+Class strategy (`.dark` on `<html>`), toggled by `ThemeToggle`, saved to `localStorage`, defaulting to the OS preference, applied pre-paint by an inline script (no flash). All tokens are CSS variables, so dark mode is a re-mapping, not separate styles:
+
+Dark mode follows **mist.ac.bd's dark identity: deep olive/army-green surfaces with khaki-gold accents** (not a blue-navy dark):
+
+| Token | Dark value | Note |
+|---|---|---|
+| `bg` / `surface` / `line` | `#12170E` / `#1B2314` / `#333F26` | Deep olive-green surfaces (MIST-style) |
+| `ink` / `ink-soft` | `#EAEDDF` / `#ABB69A` | Warm off-white text |
+| `navy-900` / `navy-700` (headings) | `#E7EDD6` / `#C9D4AD` | Headings become warm light |
+| `primary` / `primary-hover` | `#5E8A38` / `#71A145` | Olive-green actions (AA with white text) |
+| `mist-green` | `#A9C25A` | Khaki-gold eyebrow/labels, like MIST's section headings |
+| Pastels | olive-warmed night versions (e.g., sky `#22301F`/border `#3F5537`) | Same 5-swatch rotation |
+
+Rule: components always use token utilities (`bg-surface`, `text-ink`, `border-line`, `text-navy-900`…), never raw hex — that's what makes both modes automatic. Text on the active navy pill uses `text-surface` so it flips correctly.
+
 ## Typography
 
 | Role | Latin | Bangla |
