@@ -52,7 +52,13 @@
   --shadow-soft: 0 10px 20px rgb(0 0 0 / 0.08);
 }
 
-/* Dark mode (class strategy — toggled on <html> by ThemeToggle) */
+/*
+ * Dark mode — cookie + CSS strategy, zero JavaScript at paint time:
+ *  - Explicit user choice: server sets .dark or .light on <html> from the
+ *    "theme" cookie, so SSR HTML is already correct (no flash, no script).
+ *  - No choice yet: the prefers-color-scheme media block below applies the
+ *    same dark tokens automatically unless .light is set.
+ */
 @custom-variant dark (&:where(.dark, .dark *));
 
 .dark {
@@ -97,6 +103,53 @@
   --shadow-soft: 0 10px 20px rgb(0 0 0 / 0.5);
   color-scheme: dark;
 }
+
+/* OS preference fallback — applies when the user hasn't chosen explicitly */
+@media (prefers-color-scheme: dark) {
+  html:not(.light) {
+  /*
+   * MIST-style dark: deep olive/army-green surfaces with khaki-gold
+   * accents (matches mist.ac.bd's dark identity), not a blue-navy dark.
+   */
+
+  /* Surfaces */
+  --color-bg: #12170e;
+  --color-surface: #1b2314;
+  --color-line: #333f26;
+
+  /* Text */
+  --color-ink: #eaeddf;
+  --color-ink-soft: #abb69a;
+  --color-navy-900: #e7edd6; /* headings become warm light on dark */
+  --color-navy-700: #c9d4ad;
+
+  /* Accents — olive-green primary, khaki-gold institutional accent */
+  --color-primary: #5e8a38;
+  --color-primary-hover: #71a145;
+  --color-mist-green: #a9c25a; /* eyebrow/label green-gold, like MIST's section headings */
+
+  /* Pastel swatches — dimmed, olive-warmed night versions */
+  --color-sky-bg: #22301f;
+  --color-sky-border: #3f5537;
+  --color-sky-glow: #5f7f52;
+  --color-mint-bg: #1a3320;
+  --color-mint-border: #2f5c3c;
+  --color-mint-glow: #438253;
+  --color-peach-bg: #3d2c15;
+  --color-peach-border: #6b4f28;
+  --color-peach-glow: #96703a;
+  --color-lilac-bg: #2c2b1c;
+  --color-lilac-border: #4f4d33;
+  --color-lilac-glow: #6f6c48;
+  --color-butter-bg: #3a3110;
+  --color-butter-border: #6a5b20;
+  --color-butter-glow: #9c8735;
+
+  --shadow-soft: 0 10px 20px rgb(0 0 0 / 0.5);
+  color-scheme: dark;
+  }
+}
+
 
 html {
   color-scheme: light;

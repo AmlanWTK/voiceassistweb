@@ -1,23 +1,39 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useTheme } from 'next-themes'
 import { useTranslations } from 'next-intl'
 
-/** Light ⇄ dark toggle backed by next-themes. */
+const isDarkNow = (): boolean => {
+  const html = document.documentElement
+  if (html.classList.contains('dark')) return true
+  if (html.classList.contains('light')) return false
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+}
+
+/**
+ * Light ⇄ dark toggle. The choice is stored in a "theme" cookie; the server
+ * renders the matching class on <html> on every subsequent request, and this
+ * component flips the class instantly on click. No inline scripts anywhere.
+ */
 export function ThemeToggle() {
   const t = useTranslations('theme')
-  const { resolvedTheme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const [dark, setDark] = useState<boolean | null>(null)
 
-  // resolvedTheme is unknown until mounted — render a neutral button first
-  useEffect(() => setMounted(true), [])
-  const dark = mounted && resolvedTheme === 'dark'
+  useEffect(() => setDark(isDarkNow()), [])
+
+  const toggle = () => {
+    const next = !isDarkNow()
+    const html = document.documentElement
+    html.classList.toggle('dark', next)
+    html.classList.toggle('light', !next)
+    document.cookie = `theme=${next ? 'dark' : 'light'};path=/;max-age=31536000;samesite=lax`
+    setDark(next)
+  }
 
   return (
     <button
       type="button"
-      onClick={() => setTheme(dark ? 'light' : 'dark')}
+      onClick={toggle}
       aria-label={dark ? t('light') : t('dark')}
       title={dark ? t('light') : t('dark')}
       className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface text-navy-700 shadow-soft transition-colors hover:bg-sky-bg"

@@ -69,6 +69,15 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    posts: Post;
+    'gallery-albums': GalleryAlbum;
+    'app-releases': AppRelease;
+    'team-members': TeamMember;
+    partners: Partner;
+    'success-stories': SuccessStory;
+    milestones: Milestone;
+    publications: Publication;
+    'contact-requests': ContactRequest;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +87,15 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
+    'gallery-albums': GalleryAlbumsSelect<false> | GalleryAlbumsSelect<true>;
+    'app-releases': AppReleasesSelect<false> | AppReleasesSelect<true>;
+    'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
+    partners: PartnersSelect<false> | PartnersSelect<true>;
+    'success-stories': SuccessStoriesSelect<false> | SuccessStoriesSelect<true>;
+    milestones: MilestonesSelect<false> | MilestonesSelect<true>;
+    publications: PublicationsSelect<false> | PublicationsSelect<true>;
+    'contact-requests': ContactRequestsSelect<false> | ContactRequestsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +105,16 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'bn') | ('en' | 'bn')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'home-page': HomePage;
+    'about-page': AboutPage;
+    'site-settings': SiteSetting;
+  };
+  globalsSelect: {
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+  };
   locale: 'en' | 'bn';
   widgets: {
     collections: CollectionsWidget;
@@ -145,12 +171,29 @@ export interface User {
   collection: 'users';
 }
 /**
+ * Central media library. Any image or video featuring a child REQUIRES recorded parental/guardian consent before it can be saved.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
   id: number;
+  /**
+   * Meaningful description for screen readers (required — accessibility by design).
+   */
   alt: string;
+  /**
+   * Tick if any child can be identified in this image.
+   */
+  featuresChild?: boolean | null;
+  /**
+   * Required when the media features a child. Keep the signed consent form in the project records.
+   */
+  consentConfirmed?: boolean | null;
+  /**
+   * Optional photographer / source credit.
+   */
+  credit?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -162,6 +205,267 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumb?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * Handover events, app updates, milestones, and media coverage.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  /**
+   * URL identifier — auto-generated from the English title; edit only if needed.
+   */
+  slug?: string | null;
+  category: 'handover' | 'app-update' | 'milestone';
+  publishedDate: string;
+  coverImage?: (number | null) | Media;
+  /**
+   * Short summary shown on listing cards and in social previews (1–2 sentences).
+   */
+  excerpt?: string | null;
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Optional extra photos shown below the article.
+   */
+  gallery?: (number | Media)[] | null;
+  /**
+   * YouTube links (use unlisted videos for children, per child-safety policy).
+   */
+  youtubeUrls?:
+    | {
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Photo albums and videos from events, workshops, and device handovers.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-albums".
+ */
+export interface GalleryAlbum {
+  id: number;
+  title: string;
+  /**
+   * URL identifier — auto-generated from the English title; edit only if needed.
+   */
+  slug?: string | null;
+  description?: string | null;
+  eventDate?: string | null;
+  /**
+   * Lower numbers appear first.
+   */
+  displayOrder?: number | null;
+  images?: (number | Media)[] | null;
+  /**
+   * YouTube links (use unlisted videos for children, per child-safety policy).
+   */
+  videoEmbeds?:
+    | {
+        url: string;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Version history of the Voice Assistant app — powers the App Updates feed.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "app-releases".
+ */
+export interface AppRelease {
+  id: number;
+  /**
+   * e.g. 1.0.0
+   */
+  version: string;
+  releaseDate: string;
+  platform: 'android' | 'ios' | 'windows';
+  changelog: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members".
+ */
+export interface TeamMember {
+  id: number;
+  name: string;
+  role: string;
+  photo?: (number | null) | Media;
+  /**
+   * Lower numbers appear first.
+   */
+  displayOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partners".
+ */
+export interface Partner {
+  id: number;
+  name: string;
+  logo?: (number | null) | Media;
+  url?: string | null;
+  type: 'institution' | 'ngo' | 'government' | 'sponsor';
+  displayOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Testimonials from parents, teachers, and therapists. Photos of children go through the Media consent safeguard.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "success-stories".
+ */
+export interface SuccessStory {
+  id: number;
+  quote: string;
+  /**
+   * Child-safety policy: never publish a minor’s full name — use the adult’s name (e.g., a parent) or a first name only.
+   */
+  personName: string;
+  personRole: 'parent' | 'teacher' | 'therapist' | 'school-admin';
+  photo?: (number | null) | Media;
+  /**
+   * Featured stories appear on the homepage.
+   */
+  featured?: boolean | null;
+  displayOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * The project timeline — research, releases, outreach, and awards.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "milestones".
+ */
+export interface Milestone {
+  id: number;
+  title: string;
+  description?: string | null;
+  date: string;
+  type: 'research' | 'release' | 'outreach' | 'award';
+  image?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "publications".
+ */
+export interface Publication {
+  id: number;
+  title: string;
+  /**
+   * Comma-separated author list.
+   */
+  authors: string;
+  /**
+   * Journal / conference name.
+   */
+  venue?: string | null;
+  year: number;
+  /**
+   * DOI or URL.
+   */
+  link?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Messages and device requests from the public contact form.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-requests".
+ */
+export interface ContactRequest {
+  id: number;
+  name: string;
+  organization?: string | null;
+  email: string;
+  phone?: string | null;
+  requestType: 'contact' | 'device-request';
+  message: string;
+  /**
+   * Honeypot — hidden on the public form; bots fill it, humans never see it.
+   */
+  website?: string | null;
+  status?: ('new' | 'replied' | 'closed') | null;
+  /**
+   * Staff-only notes about this request.
+   */
+  internalNote?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -194,6 +498,42 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'gallery-albums';
+        value: number | GalleryAlbum;
+      } | null)
+    | ({
+        relationTo: 'app-releases';
+        value: number | AppRelease;
+      } | null)
+    | ({
+        relationTo: 'team-members';
+        value: number | TeamMember;
+      } | null)
+    | ({
+        relationTo: 'partners';
+        value: number | Partner;
+      } | null)
+    | ({
+        relationTo: 'success-stories';
+        value: number | SuccessStory;
+      } | null)
+    | ({
+        relationTo: 'milestones';
+        value: number | Milestone;
+      } | null)
+    | ({
+        relationTo: 'publications';
+        value: number | Publication;
+      } | null)
+    | ({
+        relationTo: 'contact-requests';
+        value: number | ContactRequest;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -267,6 +607,9 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  featuresChild?: T;
+  consentConfirmed?: T;
+  credit?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -278,6 +621,178 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumb?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        hero?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  category?: T;
+  publishedDate?: T;
+  coverImage?: T;
+  excerpt?: T;
+  body?: T;
+  gallery?: T;
+  youtubeUrls?:
+    | T
+    | {
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-albums_select".
+ */
+export interface GalleryAlbumsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  eventDate?: T;
+  displayOrder?: T;
+  images?: T;
+  videoEmbeds?:
+    | T
+    | {
+        url?: T;
+        caption?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "app-releases_select".
+ */
+export interface AppReleasesSelect<T extends boolean = true> {
+  version?: T;
+  releaseDate?: T;
+  platform?: T;
+  changelog?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members_select".
+ */
+export interface TeamMembersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  photo?: T;
+  displayOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partners_select".
+ */
+export interface PartnersSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
+  url?: T;
+  type?: T;
+  displayOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "success-stories_select".
+ */
+export interface SuccessStoriesSelect<T extends boolean = true> {
+  quote?: T;
+  personName?: T;
+  personRole?: T;
+  photo?: T;
+  featured?: T;
+  displayOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "milestones_select".
+ */
+export interface MilestonesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  date?: T;
+  type?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "publications_select".
+ */
+export interface PublicationsSelect<T extends boolean = true> {
+  title?: T;
+  authors?: T;
+  venue?: T;
+  year?: T;
+  link?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-requests_select".
+ */
+export interface ContactRequestsSelect<T extends boolean = true> {
+  name?: T;
+  organization?: T;
+  email?: T;
+  phone?: T;
+  requestType?: T;
+  message?: T;
+  website?: T;
+  status?: T;
+  internalNote?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -318,6 +833,232 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  hero: {
+    missionStatement: string;
+    subtitle?: string | null;
+    image?: (number | null) | Media;
+    ctaLabel?: string | null;
+  };
+  /**
+   * Impact statistics (animated counters on the homepage).
+   */
+  stats?:
+    | {
+        value: number;
+        /**
+         * e.g. "+" — shown after the number.
+         */
+        suffix?: string | null;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  whyItMatters?: {
+    heading?: string | null;
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    image?: (number | null) | Media;
+  };
+  ourSolution?: {
+    heading?: string | null;
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  featuredVideo?: {
+    youtubeUrl?: string | null;
+    caption?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page".
+ */
+export interface AboutPage {
+  id: number;
+  /**
+   * The project story — challenge, motivation, journey.
+   */
+  story?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  mission?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  acknowledgments?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  heroImage?: (number | null) | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  /**
+   * Shown publicly on the contact page.
+   */
+  contactEmail?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  socialLinks?:
+    | {
+        platform: 'facebook' | 'youtube' | 'linkedin' | 'instagram' | 'x';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        missionStatement?: T;
+        subtitle?: T;
+        image?: T;
+        ctaLabel?: T;
+      };
+  stats?:
+    | T
+    | {
+        value?: T;
+        suffix?: T;
+        label?: T;
+        id?: T;
+      };
+  whyItMatters?:
+    | T
+    | {
+        heading?: T;
+        body?: T;
+        image?: T;
+      };
+  ourSolution?:
+    | T
+    | {
+        heading?: T;
+        body?: T;
+      };
+  featuredVideo?:
+    | T
+    | {
+        youtubeUrl?: T;
+        caption?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page_select".
+ */
+export interface AboutPageSelect<T extends boolean = true> {
+  story?: T;
+  mission?: T;
+  acknowledgments?: T;
+  heroImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  contactEmail?: T;
+  phone?: T;
+  address?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

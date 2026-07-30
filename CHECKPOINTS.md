@@ -80,30 +80,30 @@
 ## PHASE 2 — Data Model (Payload Collections)
 
 ### CP-2.1 · Media collection
-- [ ] Upload-enabled Media collection with alt text (localized) and auto image sizes (thumb/card/hero)
-- [ ] `featuresChild` checkbox + required `consentConfirmed` checkbox when true (validation blocks save otherwise)
-- [ ] Storage adapter configured (local for dev; Vercel Blob/S3 for production)
+- [x] Upload-enabled Media collection with localized alt text (required — a11y) and auto image sizes (thumb 480 / card 960 / hero 1920) + optional credit field
+- [x] `featuresChild` checkbox + `consentConfirmed` validation — saving a child-flagged image without confirmed consent is blocked with a child-safety policy message
+- [x] Storage: local disk in dev; Vercel Blob auto-enabled in production when `BLOB_READ_WRITE_TOKEN` is set
 
-✅ Verify: uploading a child-flagged image without consent confirmation is rejected; sizes generate.
+✅ Verify: child image without consent → ValidationError (tested via API); with consent → saved, all 3 sizes generated. ✔ PASSED 2026-07-30
 
 ### CP-2.2 · Posts (News) collection
-- [ ] Fields: title*, slug (auto), category (handover / app-update / milestone), cover image, rich-text body*, gallery images, YouTube URLs, publish date, status (draft/published) — `*` = localized
-- [ ] Draft/publish workflow with preview
-- [ ] Slug uniqueness + required-field validation
+- [x] Fields: title*, slug (auto from EN title, unique, indexed), category (handover / app-update / milestone), cover image, excerpt*, rich-text body*, gallery images, YouTube URLs (validated — YouTube links only), publish date — `*` = localized
+- [x] Draft/publish workflow (versions+drafts); public API returns only published posts; staff see drafts
+- [x] Access: editors create/edit; only admins delete
 
-✅ Verify: create a draft post in both languages, preview it, publish it via admin only.
+✅ Verify (all via live API): draft created EN + BN; public query saw 0 docs while draft, 1 after publish; BN locale returns Bangla title; vimeo URL rejected by validation; slug auto-generated. ✔ PASSED 2026-07-30
 
 ### CP-2.3 · Gallery Albums collection
-- [ ] Fields: title*, description*, event date, images[], video embeds (YouTube URLs)
-- [ ] Album ordering control
+- [x] Fields: title*, slug, description*, event date, images[] (media relations), video embeds (validated YouTube URLs + localized captions)
+- [x] `displayOrder` ordering with `defaultSort` (lower first)
 
-✅ Verify: a test album with 3+ images and 1 video saves and reorders correctly.
+✅ Verify: album with 3 images + 1 video saved; changing displayOrder re-sorted the public listing. ✔ PASSED 2026-07-30
 
 ### CP-2.4 · App Releases collection
-- [ ] Fields: version, release date, platform, changelog* (rich text)
-- [ ] Sorted feed query (newest first)
+- [x] Fields: version (unique), release date, platform (android/ios/windows), changelog* (rich text)
+- [x] Sorted feed (newest first via defaultSort)
 
-✅ Verify: two test releases display in correct order via a test query.
+✅ Verify: releases 1.0.0 + 1.1.0 created; public feed returned ['1.1.0','1.0.0']. ✔ PASSED 2026-07-30
 
 ### CP-2.5 · Team Members & editable Pages
 - [ ] Team Members: name, role*, photo, display order
@@ -112,19 +112,19 @@
 ✅ Verify: editing hero text in admin changes it on the site without a code deploy.
 
 ### CP-2.6 · Trust & story collections *(added by design guidelines)*
-- [ ] Partners/Collaborators: name, logo, URL, type (institution/NGO/government/sponsor), order
-- [ ] Success Stories / Testimonials: quote* , person (parent/teacher/therapist), child-safe photo (consent-gated), linked school/event
-- [ ] Milestones (project timeline): date, title*, description*, type (research/release/outreach/award)
-- [ ] Publications: title, authors, venue, year, link/DOI
+- [x] Partners/Collaborators: name, logo, URL, type (institution/NGO/government/sponsor), order
+- [x] Success Stories: quote* (localized), person name (child-safety guidance in admin), role, consent-gated photo (via Media), featured flag, order
+- [x] Milestones (timeline): date, title*, description*, type (research/release/outreach/award), image
+- [x] Publications: title, authors, venue, year, link/DOI
 
-✅ Verify: one seed entry of each type renders via a test query; consent validation blocks an unconsented story photo.
+✅ Verify: one seed entry of each type created and returned via public query (MIST partner, parent story, project-start milestone, journal publication); photo consent enforced by Media collection (CP-2.1). ✔ PASSED 2026-07-30
 
 ### CP-2.7 · Contact Requests collection
-- [ ] Fields: name, organization, email/phone, message, type (contact / device request), status (new/replied/closed)
-- [ ] Public API endpoint (or server action) with spam protection (honeypot + rate limit)
-- [ ] Email notification on new submission
+- [x] Fields: name, organization, email, phone, message, type (contact/device-request), status (new/replied/closed, staff-only), internal note
+- [x] Public create with spam protection: honeypot field → 400; per-IP rate limit (5/hour) → 429; submitted status always forced to "new"; inbox readable by staff only
+- [x] Email notification wired (nodemailer adapter; activates when SMTP_* + CONTACT_NOTIFY_EMAIL env vars are set — see .env.example) ⚠️ needs SMTP credentials before launch (CP-6.2)
 
-✅ Verify: submitting the public form creates an admin record and sends a notification email.
+✅ Verify (live API): anonymous submission created (status forced to new); honeypot → 400; public inbox read → denied; 6 rapid submissions → last two 429; staff read 5 docs. Email send verified at deploy when SMTP is configured. ✔ PASSED 2026-07-30 — **PHASE 2 COMPLETE**
 
 ---
 

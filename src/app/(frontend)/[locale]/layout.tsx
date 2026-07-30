@@ -1,11 +1,11 @@
 import React from 'react'
+import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 import { Inter, Poppins, Hind_Siliguri, Noto_Sans_Bengali } from 'next/font/google'
 
 import { routing } from '@/i18n/routing'
-import { Providers } from '@/components/Providers'
 import './globals.css'
 
 const inter = Inter({
@@ -55,18 +55,22 @@ export default async function LocaleLayout(props: {
   }
   setRequestLocale(locale)
 
+  // Theme: explicit user choice lives in a cookie and is rendered by the
+  // server — no client script, no flash. No cookie → CSS media query
+  // applies the OS preference (see globals.css).
+  const themeCookie = (await cookies()).get('theme')?.value
+  const themeClass = themeCookie === 'dark' ? 'dark' : themeCookie === 'light' ? 'light' : ''
+
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${poppins.variable} ${hindSiliguri.variable} ${notoSansBengali.variable}`}
+      className={`${themeClass} ${inter.variable} ${poppins.variable} ${hindSiliguri.variable} ${notoSansBengali.variable}`.trim()}
       suppressHydrationWarning
     >
       <body>
-        <Providers>
-          <NextIntlClientProvider>
-            <main>{props.children}</main>
-          </NextIntlClientProvider>
-        </Providers>
+        <NextIntlClientProvider>
+          <main>{props.children}</main>
+        </NextIntlClientProvider>
       </body>
     </html>
   )
