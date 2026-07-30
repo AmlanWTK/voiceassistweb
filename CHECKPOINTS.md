@@ -1,0 +1,273 @@
+# Voice Assistant Website — Checkpoint Plan
+
+**Location:** `D:\VoiceAssistant\VoiceAssistantWebsite`
+**Stack:** Next.js 15 (App Router, TypeScript) · Payload CMS 3 · PostgreSQL · Tailwind CSS + shadcn/ui · next-intl (EN/BN) · Vercel
+**How to use this file:** Work strictly top-to-bottom. A checkpoint is done only when **every box** under it is checked and its **Verify** step passes. Mark boxes `[x]` as we go — this file is the single source of truth for progress.
+
+**Legend:** `CP` = Checkpoint · ✅ Verify = the proof required before moving on
+
+---
+
+## PHASE 0 — Decisions & Content Inputs
+
+### CP-0.1 · Project identity locked
+- [x] Final public app name confirmed: **Voice Assistant** (decided 2026-07-30)
+- [x] Tagline written in English and Bangla → `content/brand.md` (proposed, awaiting final word tweak)
+- [x] Logo available: app icon (`content/assets/app_icon.png`) + text wordmark; no separate design needed for launch
+- [ ] App screenshots exported from the Flutter app for use on the site ⚠️ **needs team input** (list in brand.md)
+
+✅ Verify: a `content/brand.md` file exists in the project folder with name, tagline (EN/BN), and logo files in `content/assets/`. ✔ PASSED (screenshots pending — does not block CP-1.x)
+
+### CP-0.2 · Design tokens agreed
+- [x] Color palette chosen: **warm pastel + institutional** — app's 5 pastel swatches (extracted from `pastel_swatches.dart`) + navy/green institutional anchors → `content/design-tokens.md`
+- [x] Fonts chosen: Poppins + Inter (Latin) · Hind Siliguri + Noto Sans Bengali (Bangla)
+- [ ] Reference screenshots of mist.ac.bd saved for tone alignment (tone analysis documented in design-tokens.md; screenshots optional, to add to `content/assets/mist-reference/`)
+
+✅ Verify: `content/design-tokens.md` lists hex codes and font names. ✔ PASSED
+
+### CP-0.3 · Launch content gathered (can run in parallel with build)
+- [ ] About text drafted (EN + BN)
+- [ ] Team member list with roles and photos
+- [ ] At least 1 news post drafted (e.g., project introduction or a past handover event)
+- [ ] Photos/videos from past events collected + consent status noted for each
+- [ ] Contact email address for form notifications decided
+
+✅ Verify: `content/` folder holds drafts; each child-identifiable photo has consent noted.
+
+---
+
+## PHASE 1 — Project Foundation
+
+### CP-1.1 · Environment ready
+- [x] Node.js 20+ and pnpm installed — build verified on Node v22 / pnpm 10 (⚠️ install Node 20+ & pnpm on the local PC too: `npm i -g pnpm`)
+- [x] PostgreSQL database created — dev DB verified; ⚠️ **create a free Neon/Supabase DB and put its connection string in local `.env`** (template in `.env.example`)
+- [x] Git repo initialized in `VoiceAssistantWebsite` with `.gitignore` (node_modules, .env, .next)
+
+✅ Verify: `node -v`, `git status`, and a successful `psql`/connection test. ✔ PASSED (dev environment; local PC setup mirrors it)
+
+### CP-1.2 · Next.js + Payload scaffolded
+- [x] Next.js app (v16, App Router, TypeScript) created inside `VoiceAssistantWebsite` — Payload's current template ships Next 16 (newer than the planned 15; no downside)
+- [x] Payload CMS 3.86 installed and mounted (admin at `/admin`)
+- [x] Postgres adapter connected; schema tables created clean on first run
+- [x] Tailwind CSS v4 configured with all CP-0.2 design tokens (`globals.css @theme`); shadcn/ui foundation ready (`components.json`, `cn()` util) — components added on demand from CP-3.2
+- [x] Fonts wired via next/font: Poppins+Inter (Latin), Hind Siliguri+Noto Sans Bengali (Bangla)
+- [x] Placeholder landing page proves tokens/fonts/pipeline; template demo files removed
+
+✅ Verify: `pnpm dev` serves the site at `/` (200, branded placeholder with EN+BN text) and Payload create-first-user screen at `/admin` (200); screenshots captured; no errors in dev log. ✔ PASSED 2026-07-30
+
+### CP-1.3 · First admin user & roles
+- [x] Users collection with `admin` and `editor` roles (+ `name` field; role saved to JWT; reusable access helpers in `src/access/`)
+- [x] First admin account created: `nahid.mmc41@gmail.com` / temp password `ChangeMe!2026` — ⚠️ **change on first login**
+- [x] Access rules enforced: editors create/edit media (posts arrive in Phase 2 with same rule); only admins create/delete users; editors can't list other users or change roles
+- [x] Test editor account created (`editor.test@example.com` / `EditorTest!2026`) for ongoing permission testing
+
+✅ Verify: editor listing users returned only self; editor creating a user → 403; editor self-promotion to admin ignored (role stayed `editor`); admin sees all users. ✔ PASSED 2026-07-30
+
+### CP-1.4 · Internationalization skeleton
+- [ ] next-intl configured with `en` and `bn` locales, routing `/en/...` and `/bn/...` (default `en`)
+- [ ] Payload localization enabled for `en` + `bn` on text fields
+- [ ] Language toggle component in header working
+- [ ] Bangla webfont loading via `next/font` and rendering correctly
+
+✅ Verify: toggling switches a sample headline between English and Bangla with correct glyph rendering.
+
+---
+
+## PHASE 2 — Data Model (Payload Collections)
+
+### CP-2.1 · Media collection
+- [ ] Upload-enabled Media collection with alt text (localized) and auto image sizes (thumb/card/hero)
+- [ ] `featuresChild` checkbox + required `consentConfirmed` checkbox when true (validation blocks save otherwise)
+- [ ] Storage adapter configured (local for dev; Vercel Blob/S3 for production)
+
+✅ Verify: uploading a child-flagged image without consent confirmation is rejected; sizes generate.
+
+### CP-2.2 · Posts (News) collection
+- [ ] Fields: title*, slug (auto), category (handover / app-update / milestone), cover image, rich-text body*, gallery images, YouTube URLs, publish date, status (draft/published) — `*` = localized
+- [ ] Draft/publish workflow with preview
+- [ ] Slug uniqueness + required-field validation
+
+✅ Verify: create a draft post in both languages, preview it, publish it via admin only.
+
+### CP-2.3 · Gallery Albums collection
+- [ ] Fields: title*, description*, event date, images[], video embeds (YouTube URLs)
+- [ ] Album ordering control
+
+✅ Verify: a test album with 3+ images and 1 video saves and reorders correctly.
+
+### CP-2.4 · App Releases collection
+- [ ] Fields: version, release date, platform, changelog* (rich text)
+- [ ] Sorted feed query (newest first)
+
+✅ Verify: two test releases display in correct order via a test query.
+
+### CP-2.5 · Team Members & editable Pages
+- [ ] Team Members: name, role*, photo, display order
+- [ ] Pages/Globals for Home + About content blocks (hero text*, stats numbers, mission*)
+
+✅ Verify: editing hero text in admin changes it on the site without a code deploy.
+
+### CP-2.6 · Contact Requests collection
+- [ ] Fields: name, organization, email/phone, message, type (contact / device request), status (new/replied/closed)
+- [ ] Public API endpoint (or server action) with spam protection (honeypot + rate limit)
+- [ ] Email notification on new submission
+
+✅ Verify: submitting the public form creates an admin record and sends a notification email.
+
+---
+
+## PHASE 3 — Public Site Layout & Design System
+
+### CP-3.1 · Global layout
+- [ ] Header: logo, nav (Home, About, The App, News, Gallery, Contact), language toggle; mobile hamburger menu
+- [ ] Footer: MIST logo + link, contact info, social links, privacy note link
+- [ ] 404 page (localized)
+
+✅ Verify: layout renders on mobile (360px), tablet, and desktop widths without overflow.
+
+### CP-3.2 · Design system components
+- [ ] Buttons, cards, section headings, badge (news category), stat tile, YouTube embed component (lazy-loaded, no layout shift)
+- [ ] Pastel + institutional palette applied via Tailwind theme tokens
+- [ ] Focus states and keyboard navigation on all interactive components
+
+✅ Verify: a components demo page shows all variants in both EN and BN.
+
+---
+
+## PHASE 4 — Public Pages
+
+### CP-4.1 · Home page
+- [ ] Hero: app name, tagline (EN/BN), device mockup with real app screenshots, primary CTA
+- [ ] Stats row (devices handed over, children reached, word categories, languages) — editable from admin
+- [ ] Latest 3 news cards (auto from Posts)
+- [ ] Featured video section
+- [ ] Final CTA band (Request a device / Contact)
+
+✅ Verify: all content sourced from CMS (no hardcoded text); Lighthouse performance ≥ 90 locally.
+
+### CP-4.2 · About page
+- [ ] Project story + mission (localized, CMS-driven)
+- [ ] MIST BME context section with link to mist.ac.bd
+- [ ] Team grid from Team Members collection
+- [ ] Acknowledgments section
+
+✅ Verify: adding a team member in admin appears on the page immediately (or after revalidation).
+
+### CP-4.3 · The App (Features) page
+- [ ] Feature sections mirroring the real app: communication boards (Core Words, Basic Needs, Emotions, People, Places, Verbs, Questions, Prepositions, Time, Animals, Colors, Clothes), Bangla+English study materials, writing canvas, custom words, favorites, offline use, Bengali TTS
+- [ ] Screenshot/screen-recording per major feature
+- [ ] "How devices reach kids" section explaining the activation + handover model
+
+✅ Verify: every feature named on the page actually exists in the app (cross-check against `lib/features/`).
+
+### CP-4.4 · News & Updates
+- [ ] Listing page with category filter (Handover Events / App Updates / Milestones) + pagination
+- [ ] Post detail page: cover, rich body, image gallery, video embeds, publish date, share buttons
+- [ ] App Releases changelog feed on the App Updates tab
+- [ ] Only `published` posts visible publicly; drafts hidden
+
+✅ Verify: publish a post in admin → appears in listing; unpublish → disappears. Direct URL to a draft returns 404.
+
+### CP-4.5 · Gallery
+- [ ] Albums grid → album detail with lightbox image viewer
+- [ ] Video section with lazy YouTube embeds
+- [ ] Only consent-cleared media displayable
+
+✅ Verify: images load responsively (correct srcset sizes); a non-consented image cannot be attached to a public album.
+
+### CP-4.6 · Contact / Request a Device page
+- [ ] Localized form with type selector (general contact / device request)
+- [ ] Client + server validation, success and error states
+- [ ] Honeypot + rate limiting active
+
+✅ Verify: end-to-end test — submit form → record in admin → notification email received → spam bot simulation blocked.
+
+---
+
+## PHASE 5 — Quality Pass
+
+### CP-5.1 · SEO & metadata
+- [ ] Per-page titles/descriptions (localized), Open Graph + Twitter cards with images
+- [ ] `sitemap.xml`, `robots.txt`, canonical URLs, `hreflang` for en/bn pairs
+- [ ] JSON-LD (Organization + NewsArticle on posts)
+
+✅ Verify: OG preview renders correctly in a card validator; sitemap lists all public routes in both locales.
+
+### CP-5.2 · Accessibility (WCAG AA)
+- [ ] Full keyboard navigation, visible focus, skip-to-content link
+- [ ] Alt text enforced on all public images; correct heading hierarchy
+- [ ] Color contrast checked for both palettes
+- [ ] `lang` attributes correct per locale (bn pages announce Bangla)
+
+✅ Verify: axe/Lighthouse a11y score ≥ 95 on Home, News detail, and Contact.
+
+### CP-5.3 · Performance & responsiveness
+- [ ] Images optimized via next/image everywhere; fonts subset + preloaded
+- [ ] Tested at 360px, 768px, 1024px, 1440px
+- [ ] Lighthouse: Performance ≥ 90, Best Practices ≥ 95 on key pages
+
+✅ Verify: recorded Lighthouse scores committed to `docs/lighthouse/`.
+
+### CP-5.4 · Security & privacy
+- [ ] `.env` secrets never committed; admin behind strong passwords
+- [ ] Rate limiting on form + login; Payload CSRF defaults intact
+- [ ] Privacy & child-consent policy page written (EN/BN) and linked in footer
+
+✅ Verify: security headers check passes (CSP/HSTS via config); policy page live.
+
+---
+
+## PHASE 6 — Content Load & Launch
+
+### CP-6.1 · Real content in
+- [ ] About, team, hero text entered in EN + BN
+- [ ] First 2–3 news posts published (including at least one handover story if available)
+- [ ] First gallery album live with consent-cleared media
+- [ ] First App Release entry matching the current Flutter app version (1.0.0)
+
+✅ Verify: no lorem ipsum or placeholder image anywhere on the public site, in either language.
+
+### CP-6.2 · Production deployment
+- [ ] Vercel project connected to the Git repo; production Postgres + Blob storage configured
+- [ ] Environment variables set in Vercel; production build succeeds
+- [ ] Temporary domain live (later: request `mist.ac.bd` subdomain from MIST IT)
+- [ ] Analytics installed (Plausible or GA4)
+
+✅ Verify: production URL loads both locales; admin login works in production; a test post published in production appears live.
+
+### CP-6.3 · Handover & training
+- [ ] Editor accounts created for the team
+- [ ] 1-page "How to post news & photos" guide written (with consent checklist)
+- [ ] Backup/restore procedure documented (database + media)
+
+✅ Verify: a team member (not the developer) successfully publishes a test post following the guide alone.
+
+### CP-6.4 · Launch review 🏁
+- [ ] Every checkpoint above is `[x]`
+- [ ] Final cross-device walkthrough (phone, tablet, desktop) in both languages
+- [ ] MIST stakeholders shown the site; feedback logged as Phase 7 items
+
+✅ Verify: sign-off recorded at the bottom of this file with date.
+
+---
+
+## PHASE 7 — Post-Launch (backlog, not blocking launch)
+
+- [ ] For Parents & Teachers section (usage guide, FAQ, downloadable PDF in EN/BN)
+- [ ] Device/activation tracking module in admin (which device → which school/child, internal only)
+- [ ] Testimonials collection + section
+- [ ] Newsletter signup
+- [ ] Press kit page
+- [ ] MIST subdomain migration when granted
+
+---
+
+## Sign-off
+
+| Milestone | Date | Signed |
+|---|---|---|
+| Phase 0–1 complete | | |
+| Phase 2–3 complete | | |
+| Phase 4 complete | | |
+| Phase 5 complete | | |
+| **LAUNCH** | | |

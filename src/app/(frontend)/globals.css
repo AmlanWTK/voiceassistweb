@@ -1,0 +1,69 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/*
+ * Design tokens — see content/design-tokens.md (CP-0.2)
+ * Direction: warm pastel + institutional
+ */
+@theme {
+  /* Institutional anchors */
+  --color-navy-900: #1c2a4a;
+  --color-navy-700: #2c3e66;
+  --color-mist-green: #1e7a46;
+  --color-ink: #212121;
+  --color-ink-soft: #5c5c5c;
+
+  /* Primary action */
+  --color-primary: #2f6fb6;
+  --color-primary-hover: #265c99;
+
+  /* Surfaces */
+  --color-bg: #f5f6f8;
+  --color-surface: #ffffff;
+  --color-line: #e0e0e0;
+
+  /* Pastel swatches (from the app's pastel_swatches.dart) */
+  --color-sky-bg: #dceefb;
+  --color-sky-border: #b8dcf2;
+  --color-sky-glow: #8fc7ea;
+  --color-mint-bg: #dff5ec;
+  --color-mint-border: #bfe6d3;
+  --color-mint-glow: #8fd4b0;
+  --color-peach-bg: #fdeae0;
+  --color-peach-border: #f3cbb3;
+  --color-peach-glow: #f0b08a;
+  --color-lilac-bg: #ede7f9;
+  --color-lilac-border: #d8c9f0;
+  --color-lilac-glow: #c3a8ea;
+  --color-butter-bg: #fbf3d9;
+  --color-butter-border: #f0e1a0;
+  --color-butter-glow: #e8ce6e;
+
+  /* Shape */
+  --radius-card: 24px;
+  --radius-btn: 12px;
+  --radius-img: 16px;
+
+  /* Fonts (wired to next/font variables in layout.tsx) */
+  --font-heading: var(--font-poppins), var(--font-hind-siliguri), sans-serif;
+  --font-body: var(--font-inter), var(--font-noto-bengali), sans-serif;
+
+  /* Soft shadow */
+  --shadow-soft: 0 10px 20px rgb(0 0 0 / 0.08);
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  color: var(--color-navy-900);
+}

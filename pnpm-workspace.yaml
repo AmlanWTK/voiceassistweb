@@ -1,0 +1,9 @@
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  workerd: true
+
+# Allow packages regardless of publish age (pnpm supply-chain policy).
+# Dev convenience - revisit before production launch (CP-5.4).
+minimumReleaseAge: 0
