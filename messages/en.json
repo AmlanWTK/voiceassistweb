@@ -41,5 +41,80 @@
     "title": "Page not found",
     "body": "The page you are looking for doesn't exist or has moved.",
     "backHome": "Back to home"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "MIST · Department of Biomedical Engineering",
+      "ctaPrimary": "Request a device",
+      "ctaSecondary": "Explore the app"
+    },
+    "stats": {
+      "eyebrow": "Impact",
+      "title": "Progress that speaks for itself"
+    },
+    "why": {
+      "eyebrow": "Why this matters",
+      "title": "Thousands of children have words they cannot say aloud",
+      "body": "Many special children in Bangladesh understand far more than they can express. Without a way to communicate, their needs, feelings, and ideas stay locked inside — at home, in classrooms, everywhere. Communication is not a luxury; it is the foundation of learning, dignity, and inclusion."
+    },
+    "solution": {
+      "eyebrow": "Our solution",
+      "title": "A voice in their own language",
+      "body": "Voice Assistant is a free, fully offline AAC app built by MIST researchers. A child taps a picture — the app speaks it aloud in natural Bangla or English. Sixteen communication categories, alphabet learning for both languages, a writing canvas, and words families can customize with their own photos and voices.",
+      "cta": "See how the app works"
+    },
+    "showcase": {
+      "eyebrow": "Inside the app",
+      "title": "Built around how children actually communicate",
+      "categories": [
+        "Core Words",
+        "Basic Needs",
+        "Emotions",
+        "People",
+        "Places",
+        "Verbs",
+        "Questions",
+        "Time",
+        "Animals",
+        "Colors",
+        "Clothes",
+        "Study Materials"
+      ],
+      "note": "Every board speaks aloud in Bangla with an English option — and works completely offline."
+    },
+    "research": {
+      "eyebrow": "Research & innovation",
+      "title": "Engineering grounded in evidence",
+      "body": "The project is developed at the Department of Biomedical Engineering, MIST, through needs assessment with special-education teachers, families, and therapists — from Bengali speech synthesis tuning to sensory-friendly interface design."
+    },
+    "stories": {
+      "eyebrow": "Success stories",
+      "title": "What families and teachers tell us"
+    },
+    "news": {
+      "eyebrow": "Latest news",
+      "title": "The project keeps moving",
+      "viewAll": "All news & updates"
+    },
+    "outreach": {
+      "eyebrow": "Devices reaching children",
+      "title": "From our lab to their hands",
+      "body": "We prepare each device, activate the app, and hand it over ready to use — then follow up with schools and families.",
+      "viewGallery": "See the gallery"
+    },
+    "partners": {
+      "eyebrow": "Partners & collaborators",
+      "title": "Stronger together"
+    },
+    "cta": {
+      "title": "Help a child be heard",
+      "body": "Whether you are a parent, a school, or an organization — reach out. We will find a way to get a device into the right hands.",
+      "button": "Contact us"
+    }
+  },
+  "newsCategories": {
+    "handover": "Handover Event",
+    "app-update": "App Update",
+    "milestone": "Milestone"
   }
 }

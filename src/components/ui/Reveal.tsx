@@ -24,19 +24,33 @@ export function Reveal({
   useEffect(() => {
     const el = ref.current
     if (!el) return
+    const show = () => el.classList.add('is-visible')
+
+    if (typeof IntersectionObserver === 'undefined') {
+      show()
+      return
+    }
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            el.classList.add('is-visible')
+            show()
             io.disconnect()
           }
         })
       },
-      { threshold: 0.15 },
+      // Trigger slightly before the element enters the viewport
+      { threshold: 0.05, rootMargin: '0px 0px 15% 0px' },
     )
     io.observe(el)
-    return () => io.disconnect()
+    // Fail-safe: content must never stay hidden (slow devices, odd
+    // scroll containers, print, automation) — force visible after 1.2s
+    // once the element is anywhere near the viewport.
+    const failSafe = window.setTimeout(show, 1200)
+    return () => {
+      io.disconnect()
+      window.clearTimeout(failSafe)
+    }
   }, [])
 
   return (

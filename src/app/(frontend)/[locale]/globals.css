@@ -151,27 +151,31 @@
 }
 
 
-html {
-  color-scheme: light;
-}
+/* Base styles live in the base layer so Tailwind utilities can override them
+   (e.g. text-surface on a heading inside the navy CTA band). */
+@layer base {
+  html {
+    color-scheme: light;
+  }
 
-body {
-  background-color: var(--color-bg);
-  color: var(--color-ink);
-  font-family: var(--font-body);
-  transition:
-    background-color 200ms ease-out,
-    color 200ms ease-out;
-}
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    transition:
+      background-color 200ms ease-out,
+      color 200ms ease-out;
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-heading);
-  color: var(--color-navy-900);
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    color: var(--color-navy-900);
+  }
 }
 
 /* ---------- Focus visibility (accessibility by design) ---------- */

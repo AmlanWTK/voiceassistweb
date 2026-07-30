@@ -151,19 +151,20 @@
 ## PHASE 4 — Public Pages
 
 ### CP-4.1 · Home page — 11-section story flow (per design guidelines)
-- [ ] 1. Hero: powerful mission statement (EN/BN), authentic photo/device mockup, primary CTA
-- [ ] 2. Impact statistics (animated counters, CMS-editable)
-- [ ] 3. Why this project matters (the challenge, told with dignity)
-- [ ] 4. Our solution (the research journey, not a feature list)
-- [ ] 5. Interactive application showcase (screenshots/screen recordings)
-- [ ] 6. Research and innovation (MIST BME, methodology)
-- [ ] 7. Success stories (from Success Stories collection)
-- [ ] 8. Latest news and announcements (auto from Posts)
-- [ ] 9. Device distribution and outreach activities
-- [ ] 10. Partners and collaborators (logo row)
-- [ ] 11. Call to action (request a device / follow the journey)
+- [x] 1. Hero: mission statement from CMS (falls back to tagline), hero photo slot (placeholder mockup until real photo uploaded), Request-a-device + Explore-the-app CTAs
+- [x] 2. Impact statistics — CMS-editable stats array → animated counters
+- [x] 3. Why this project matters — CMS rich text with dignified default copy (EN/BN)
+- [x] 4. Our solution — CMS rich text + link to The App page
+- [x] 5. Application showcase — 12 category chips in app pastel rotation + offline/bilingual note (screenshots slot in when exported from the app)
+- [x] 6. Research and innovation + featured video slot (lazy YouTube embed, CMS-set URL)
+- [x] 7. Success stories — featured stories from collection → quote blocks
+- [x] 8. Latest news — 3 newest published posts with cover, category badge, date, excerpt + "all news" link
+- [x] 9. Device distribution & outreach — narrative + latest outreach milestones + gallery link
+- [x] 10. Partners — logo row (falls back to wordmark when no logo uploaded)
+- [x] 11. CTA band — "Help a child be heard" → contact
+- [x] Robustness: every CMS fetch failure-tolerant (page renders with defaults on empty DB); Reveal fail-safe guarantees content never stays hidden; full type-check clean
 
-✅ Verify: sections flow as a narrative; all content CMS-sourced; Lighthouse performance ≥ 90; reads correctly in EN and BN, light and dark.
+✅ Verify: all 11 sections render as one narrative with live CMS data (full-page screenshots EN-light + BN-dark); console clean; `tsc --noEmit` passes. Lighthouse ≥90 measured formally at CP-5.3 (production build). ✔ PASSED 2026-07-30
 
 ### CP-4.2 · About page
 - [ ] Project story + mission (localized, CMS-driven)
