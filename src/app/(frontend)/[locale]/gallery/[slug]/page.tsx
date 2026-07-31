@@ -4,6 +4,7 @@ import { setRequestLocale, getTranslations, getFormatter } from 'next-intl/serve
 
 import { getAlbumBySlug, consentCleared } from '@/lib/cms-gallery'
 import { mediaUrl, mediaAlt, type CmsLocale } from '@/lib/cms'
+import { buildMetadata } from '@/lib/seo'
 import { AlbumGallery } from '@/components/AlbumGallery'
 import { ClampedText } from '@/components/ClampedText'
 import { Reveal } from '@/components/ui/Reveal'
@@ -19,7 +20,15 @@ export async function generateMetadata(props: {
   const tSite = await getTranslations({ locale, namespace: 'site' })
   const album = await getAlbumBySlug(locale as CmsLocale, slug)
   if (!album) return { title: tSite('name') }
-  return { title: `${album.title} — ${tSite('name')}` }
+  const cover = mediaUrl((album.images || []).filter(consentCleared)[0], 'hero')
+  return buildMetadata({
+    locale,
+    path: `/gallery/${album.slug}`,
+    title: `${album.title} — ${tSite('name')}`,
+    description: album.description || tSite('tagline'),
+    siteName: tSite('name'),
+    image: cover || undefined,
+  })
 }
 
 /** CP-4.5 · Gallery album detail — lightbox photo grid + video section.

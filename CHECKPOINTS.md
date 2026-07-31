@@ -221,11 +221,25 @@
 ## PHASE 5 — Quality Pass
 
 ### CP-5.1 · SEO & metadata
-- [ ] Per-page titles/descriptions (localized), Open Graph + Twitter cards with images
-- [ ] `sitemap.xml`, `robots.txt`, canonical URLs, `hreflang` for en/bn pairs
-- [ ] JSON-LD (Organization + NewsArticle on posts)
+- [x] Per-page titles/descriptions (localized), Open Graph + Twitter cards with images
+- [x] `sitemap.xml`, `robots.txt`, canonical URLs, `hreflang` for en/bn pairs
+- [x] JSON-LD (Organization + NewsArticle on posts)
 
-✅ Verify: OG preview renders correctly in a card validator; sitemap lists all public routes in both locales.
+✅ Verify: Central `src/lib/seo.ts` helper (`buildMetadata`, `buildAlternates`, `organizationJsonLd`, `newsArticleJsonLd`) used by every page's `generateMetadata()` — homepage, About, App, News list, News detail, Gallery list, Gallery detail, Contact. `tsc --noEmit` clean.
+
+Dynamic OG image: `[locale]/opengraph-image.tsx` (1200×630, `next/og` `ImageResponse`, system fonts only — avoids this sandbox's known Google Fonts fetch failure) confirmed generating a valid PNG for both `/en` and `/bn` (fetched binary via curl, `file` confirms 1200×630 PNG, visually inspected both — correct localized copy, MIST navy/olive branding).
+
+Per-post/per-album OG image override: News detail and Gallery detail pages pass their own cover photo as the `image` param instead of the generated default — confirmed via curl+grep on a real post (`first-device-handover-at-dhaka-school`) and a real album (`dhaka-school-handover-day`): `og:image`/`twitter:image` both point at the actual cover photo, not the generated fallback.
+
+**Bug caught during this verification pass and fixed**: `mediaUrl()` returns Payload's site-relative media path (e.g. `/api/media/file/...`). Next's `openGraph`/`twitter` metadata fields auto-resolve relative URLs against `metadataBase`, so those rendered correctly — but the hand-built `NewsArticle` JSON-LD `<script>` does not go through that resolution, so it was emitting a bare relative path in `image`, which is invalid per schema.org (image must be an absolute URL). Added an `absoluteUrl()` helper in `seo.ts` and applied it to `buildMetadata`'s `image` param (belt-and-braces) and inside `newsArticleJsonLd`. Re-verified via curl+grep on the same real post: JSON-LD `image` now reads `https://voiceassistant.mist.ac.bd/api/media/file/test-photo-1920x1222.jpg` — fully absolute. `tsc --noEmit` re-run clean after the fix.
+
+Full meta tag inspection (curl + grep on rendered `/en/news/<slug>`): `og:title`, `og:description`, `og:url`, `og:site_name`, `og:locale`, `og:image` (+width/height/alt), `og:type=article`, `twitter:card=summary_large_image`, `twitter:title/description/image` all present and correct. `NewsArticle` JSON-LD script present with correct `headline`, `description`, absolute `image`, `datePublished`, `dateModified`, `author`, `publisher` (with logo), `mainEntityOfPage`. Homepage carries `Organization` JSON-LD (name, url, logo, description, `parentOrganization`: MIST) confirmed via curl+grep.
+
+`hreflang`: every page emits 3 `<link rel="alternate" hreflang="...">` tags (en, bn, x-default) plus a correct `canonical` — confirmed via curl+grep on `/en`.
+
+`sitemap.xml` and `robots.txt`: placed at the true app root (outside `[locale]`), confirmed reachable un-prefixed because the i18n middleware matcher already excludes any path containing a dot. Inspected actual XML content (not just status): all 7 static paths × 2 locales present with correct `hreflang` alternates and priority/changefreq; every published post and every gallery album present × 2 locales with `lastModified` from `updatedAt`. Wrapped in `getPayloadSafe()` + try/catch so a DB outage still serves the static routes rather than a broken sitemap. `robots.txt` correctly disallows `/admin` and `/api`, allows everything else, and points `Sitemap:` at the real sitemap URL. Both confirmed 200 in EN and BN-agnostic form (sitemap/robots are locale-agnostic documents).
+
+⚠️ **Action required before launch**: `SITE_URL` in `src/lib/seo.ts` currently falls back to the placeholder `https://voiceassistant.mist.ac.bd`. Set `NEXT_PUBLIC_SITE_URL` in the real Vercel project's env vars to the actual production domain before going live — otherwise every canonical URL, OG image URL, hreflang tag, sitemap entry, and JSON-LD URL will point at the wrong domain. ✔ PASSED 2026-07-31
 
 ### CP-5.2 · Accessibility (WCAG AA)
 - [ ] Full keyboard navigation, visible focus, skip-to-content link

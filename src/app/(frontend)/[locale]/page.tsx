@@ -5,6 +5,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import { Link } from '@/i18n/navigation'
 import { getHomeData, mediaUrl, mediaAlt, type CmsLocale } from '@/lib/cms'
+import { buildMetadata, organizationJsonLd } from '@/lib/seo'
 import { Badge, categoryTone } from '@/components/ui/Badge'
 import { ButtonLink } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
@@ -21,6 +22,18 @@ const pastelCycle = [
   'bg-lilac-bg border-lilac-border',
   'bg-butter-bg border-butter-border',
 ]
+
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
+  const { locale } = await props.params
+  const tSite = await getTranslations({ locale, namespace: 'site' })
+  return buildMetadata({
+    locale,
+    path: '',
+    title: `${tSite('name')} — ${tSite('tagline')}`,
+    description: tSite('underConstruction'),
+    siteName: tSite('name'),
+  })
+}
 
 /** CP-4.1 · Homepage — 11-section story flow per content/design-guidelines.md */
 export default async function HomePage(props: { params: Promise<{ locale: string }> }) {
@@ -44,6 +57,14 @@ export default async function HomePage(props: { params: Promise<{ locale: string
 
   return (
     <div>
+      {/* Organization structured data — one Organization node for the whole site */}
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(organizationJsonLd(locale, tSite('underConstruction'))),
+        }}
+      />
       {/* 1 · Hero — powerful mission statement */}
       <section className="relative overflow-hidden">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:py-28">

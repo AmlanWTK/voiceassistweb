@@ -3,6 +3,7 @@ import { setRequestLocale, getTranslations } from 'next-intl/server'
 
 import { getAppPageData } from '@/lib/cms-app'
 import type { CmsLocale } from '@/lib/cms'
+import { buildMetadata } from '@/lib/seo'
 import { Badge } from '@/components/ui/Badge'
 import { ButtonLink } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
@@ -13,7 +14,13 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   const { locale } = await props.params
   const t = await getTranslations({ locale, namespace: 'appPage' })
   const tSite = await getTranslations({ locale, namespace: 'site' })
-  return { title: `${t('hero.title')} — ${tSite('name')}` }
+  return buildMetadata({
+    locale,
+    path: '/app',
+    title: `${t('hero.title')} — ${tSite('name')}`,
+    description: t('hero.lede'),
+    siteName: tSite('name'),
+  })
 }
 
 const pastelCycle = [

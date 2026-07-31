@@ -4,6 +4,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import { getAboutData } from '@/lib/cms-about'
 import { mediaUrl, mediaAlt, type CmsLocale } from '@/lib/cms'
+import { buildMetadata } from '@/lib/seo'
 import { Reveal } from '@/components/ui/Reveal'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { TimelineItem } from '@/components/ui/TimelineItem'
@@ -12,7 +13,13 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   const { locale } = await props.params
   const t = await getTranslations({ locale, namespace: 'aboutPage' })
   const tSite = await getTranslations({ locale, namespace: 'site' })
-  return { title: `${t('hero.title')} — ${tSite('name')}` }
+  return buildMetadata({
+    locale,
+    path: '/about',
+    title: `${t('hero.title')} — ${tSite('name')}`,
+    description: t('hero.lede'),
+    siteName: tSite('name'),
+  })
 }
 
 /** CP-4.2 · About page — the project story, mission, team, and journey. */

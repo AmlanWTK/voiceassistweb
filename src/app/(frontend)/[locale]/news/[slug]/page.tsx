@@ -5,14 +5,13 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import { getPostBySlug } from '@/lib/cms-news'
 import { mediaUrl, mediaAlt, type CmsLocale } from '@/lib/cms'
+import { SITE_URL, buildMetadata, newsArticleJsonLd } from '@/lib/seo'
 import { Badge, categoryTone } from '@/components/ui/Badge'
 import { Reveal } from '@/components/ui/Reveal'
 import { YouTubeEmbed } from '@/components/ui/YouTubeEmbed'
 import { youTubeId } from '@/lib/youtube'
 import { ShareButtons } from '@/components/ShareButtons'
 import { Link } from '@/i18n/navigation'
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://voiceassistant.mist.ac.bd'
 
 export async function generateMetadata(props: {
   params: Promise<{ locale: string; slug: string }>
@@ -21,10 +20,16 @@ export async function generateMetadata(props: {
   const tSite = await getTranslations({ locale, namespace: 'site' })
   const post = await getPostBySlug(locale as CmsLocale, slug)
   if (!post) return { title: tSite('name') }
-  return {
+  const cover = mediaUrl(post.coverImage, 'hero')
+  return buildMetadata({
+    locale,
+    path: `/news/${post.slug}`,
     title: `${post.title} — ${tSite('name')}`,
-    description: post.excerpt || undefined,
-  }
+    description: post.excerpt || tSite('tagline'),
+    siteName: tSite('name'),
+    type: 'article',
+    image: cover || undefined,
+  })
 }
 
 /** CP-4.4 · News post detail — cover, rich body, gallery, video embeds,
@@ -52,6 +57,22 @@ export default async function NewsDetailPage(props: {
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            newsArticleJsonLd({
+              title: post.title,
+              description: post.excerpt || undefined,
+              url: pageUrl,
+              image: cover,
+              publishedDate: post.publishedDate,
+              updatedDate: post.updatedAt,
+            }),
+          ),
+        }}
+      />
       <article className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
         <Reveal>
           <Link href="/news" className="text-sm font-semibold text-primary hover:underline">

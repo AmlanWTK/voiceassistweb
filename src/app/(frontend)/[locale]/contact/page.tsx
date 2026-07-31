@@ -3,6 +3,7 @@ import { setRequestLocale, getTranslations } from 'next-intl/server'
 
 import { getSiteSettings } from '@/lib/cms-contact'
 import type { CmsLocale } from '@/lib/cms'
+import { buildMetadata } from '@/lib/seo'
 import { ContactForm } from '@/components/ContactForm'
 import { Card } from '@/components/ui/Card'
 import { Reveal } from '@/components/ui/Reveal'
@@ -12,7 +13,13 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   const { locale } = await props.params
   const t = await getTranslations({ locale, namespace: 'contactPage' })
   const tSite = await getTranslations({ locale, namespace: 'site' })
-  return { title: `${t('hero.title')} — ${tSite('name')}` }
+  return buildMetadata({
+    locale,
+    path: '/contact',
+    title: `${t('hero.title')} — ${tSite('name')}`,
+    description: t('hero.lede'),
+    siteName: tSite('name'),
+  })
 }
 
 const SOCIAL_ICON: Record<string, React.ReactNode> = {

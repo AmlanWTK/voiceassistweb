@@ -1,11 +1,13 @@
 import React from 'react'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 import { Inter, Poppins, Hind_Siliguri, Noto_Sans_Bengali } from 'next/font/google'
 
 import { routing } from '@/i18n/routing'
+import { SITE_URL, buildMetadata } from '@/lib/seo'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import './globals.css'
@@ -37,10 +39,31 @@ const notoSansBengali = Noto_Sans_Bengali({
   display: 'swap',
 })
 
-export const metadata = {
-  title: 'Voice Assistant — Giving every child a voice',
-  description:
-    'A free, offline, Bangla-first AAC app that helps special children communicate, learn, and be heard. A project of the Department of Biomedical Engineering, MIST.',
+const DESCRIPTION = {
+  en: 'A free, offline, Bangla-first AAC app that helps special children communicate, learn, and be heard. A project of the Department of Biomedical Engineering, MIST.',
+  bn: 'বিশেষ শিশুদের যোগাযোগ, শেখা এবং নিজের কথা প্রকাশ করতে সাহায্য করে এমন একটি বিনামূল্যের, অফলাইন, বাংলা-নির্ভর AAC অ্যাপ। মিলিটারি ইনস্টিটিউট অব সায়েন্স অ্যান্ড টেকনোলজির বায়োমেডিকেল ইঞ্জিনিয়ারিং বিভাগের একটি প্রকল্প।',
+}
+
+export const metadataBase = new URL(SITE_URL)
+
+/** Site-wide fallback metadata — every page overrides this via its own
+ *  generateMetadata(), but this keeps the root layout itself (and any route
+ *  that forgets to set metadata) reasonably correct and localized. */
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await props.params
+  const description = locale === 'bn' ? DESCRIPTION.bn : DESCRIPTION.en
+  return {
+    metadataBase,
+    ...buildMetadata({
+      locale,
+      path: '',
+      title: 'Voice Assistant — Giving every child a voice',
+      description,
+      siteName: 'Voice Assistant',
+    }),
+  }
 }
 
 export function generateStaticParams() {

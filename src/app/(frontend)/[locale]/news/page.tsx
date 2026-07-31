@@ -4,6 +4,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import { getNewsListData, type PostCategory } from '@/lib/cms-news'
 import { mediaUrl, mediaAlt, type CmsLocale } from '@/lib/cms'
+import { buildMetadata } from '@/lib/seo'
 import { Badge, categoryTone } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
 import { ButtonLink } from '@/components/ui/Button'
@@ -15,7 +16,13 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   const { locale } = await props.params
   const t = await getTranslations({ locale, namespace: 'newsPage' })
   const tSite = await getTranslations({ locale, namespace: 'site' })
-  return { title: `${t('hero.title')} — ${tSite('name')}` }
+  return buildMetadata({
+    locale,
+    path: '/news',
+    title: `${t('hero.title')} — ${tSite('name')}`,
+    description: t('hero.lede'),
+    siteName: tSite('name'),
+  })
 }
 
 const CATEGORIES: PostCategory[] = ['handover', 'app-update', 'milestone']

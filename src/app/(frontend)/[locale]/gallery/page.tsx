@@ -3,6 +3,7 @@ import { setRequestLocale, getTranslations, getFormatter } from 'next-intl/serve
 
 import { getGalleryListData, consentCleared } from '@/lib/cms-gallery'
 import { mediaUrl, mediaAlt, type CmsLocale } from '@/lib/cms'
+import { buildMetadata } from '@/lib/seo'
 import { Card } from '@/components/ui/Card'
 import { AlbumCoverMosaic } from '@/components/ui/AlbumCoverMosaic'
 import { Reveal } from '@/components/ui/Reveal'
@@ -13,7 +14,13 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   const { locale } = await props.params
   const t = await getTranslations({ locale, namespace: 'galleryPage' })
   const tSite = await getTranslations({ locale, namespace: 'site' })
-  return { title: `${t('hero.title')} — ${tSite('name')}` }
+  return buildMetadata({
+    locale,
+    path: '/gallery',
+    title: `${t('hero.title')} — ${tSite('name')}`,
+    description: t('hero.lede'),
+    siteName: tSite('name'),
+  })
 }
 
 /** CP-4.5 · Gallery listing — one card per album, cover pulled from its
