@@ -208,11 +208,13 @@
 **Gallery listing card description clamp (follow-up user feedback):** the listing page's album cards had the same problem — long descriptions ran the full length of the card, unclamped. Since each card is already one big `Link` to the album's detail page, an in-place expand/collapse there would be a nested-interactive-element anti-pattern; instead the card description clamps to 3 lines (`line-clamp-3`) with a static "See more" hint (shown only when the description exceeds ~140 characters) that rides along with the existing whole-card link to the detail page, where the full text — and its own See more/See less toggle — already lives. Verified visually: the long-description card clamps to 3 lines + shows the hint, the short-description card renders in full with no hint. ✔ PASSED 2026-07-31
 
 ### CP-4.6 · Contact / Request a Device page
-- [ ] Localized form with type selector (general contact / device request)
-- [ ] Client + server validation, success and error states
-- [ ] Honeypot + rate limiting active
+- [x] Localized form with type selector (General Contact / Request a Device pill toggle)
+- [x] Client + server validation, success and error states (client: required fields + email format before submit; server: honeypot + rate limit enforced by the existing Phase 2 collection hook)
+- [x] Honeypot + rate limiting active (reused as-is from Phase 2 — visually hidden "website" field, 5-submissions/hour/IP in-memory limiter)
+- [x] "Reach us directly" sidebar sourced from the Site Settings global (email/phone/address/social links), degrades to just the privacy note when Site Settings is empty
+- [x] Privacy & Child Safety link included per design guidelines' trust requirements
 
-✅ Verify: end-to-end test — submit form → record in admin → notification email received → spam bot simulation blocked.
+✅ Verify: `tsc --noEmit` clean; `/en/contact`, `/bn/contact` return 200. Real end-to-end test against the live local Postgres (not mocked): empty-form submit shows client-side "required" error; a real submission POSTs to `/api/contact-requests` and returns 201 with the doc forced to `status: "new"`; honeypot-filled submission returns 400 and is rejected; 6 rapid submissions in the same hour correctly return 429 after the 5th, and the frontend surfaces the translated rate-limit message (Playwright-confirmed). Success state (with "send another message") verified in EN-light; full form + validation + success verified in BN-dark with correct translations. 0 console errors throughout. Email notification path (`CONTACT_NOTIFY_EMAIL` + SMTP) is unchanged from Phase 2 and untestable in this sandbox (no SMTP configured here) — verify it once real SMTP credentials are set in `.env`. ✔ PASSED 2026-07-31
 
 ---
 
