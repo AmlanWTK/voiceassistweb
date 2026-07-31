@@ -116,5 +116,86 @@
     "handover": "Handover Event",
     "app-update": "App Update",
     "milestone": "Milestone"
+  },
+  "aboutPage": {
+    "hero": {
+      "eyebrow": "About the project",
+      "title": "Built by engineers. Driven by families.",
+      "lede": "Voice Assistant began as a question from the Department of Biomedical Engineering, MIST: what would it take to give every special child in Bangladesh a way to be heard?"
+    },
+    "story": {
+      "eyebrow": "Our story"
+    },
+    "mission": {
+      "eyebrow": "Our mission"
+    },
+    "team": {
+      "eyebrow": "The team",
+      "title": "The people behind the project"
+    },
+    "timeline": {
+      "eyebrow": "Our journey",
+      "title": "How we got here"
+    },
+    "acknowledgments": {
+      "eyebrow": "Acknowledgments"
+    },
+    "mistLink": "Learn more about MIST at mist.ac.bd",
+    "fallback": {
+      "story": "Voice Assistant grew out of conversations with special-education teachers and parents in Dhaka, who described the same frustration again and again: their children understood so much more than they could say. The Department of Biomedical Engineering at MIST set out to build something different — an app that speaks a child's own language, works without an internet connection, and costs families nothing.\n\nWhat started as a research prototype is now a growing project: devices prepared, activated, and handed directly to children and their schools, with the team following up to learn what works and what needs to change.",
+      "mission": "To give every special child in Bangladesh a reliable, dignified way to communicate — in Bangla, in English, anywhere, without needing a connection to do it.",
+      "acknowledgments": "This project would not exist without the special-education teachers, therapists, and families who shared their time and insight, and the Department of Biomedical Engineering, Military Institute of Science and Technology, for its continued support."
+    }
+  },
+  "milestoneType": {
+    "research": "Research",
+    "release": "Release",
+    "outreach": "Outreach",
+    "award": "Award"
+  },
+  "appPage": {
+    "hero": {
+      "eyebrow": "The App",
+      "title": "A voice that fits in a backpack",
+      "lede": "Voice Assistant is a free, offline AAC (Augmentative and Alternative Communication) app — built so a child can carry their voice anywhere, no internet required."
+    },
+    "challenge": {
+      "eyebrow": "The challenge",
+      "title": "Understanding is not the same as being understood",
+      "body": "Many special children process language just fine — what's missing is a reliable way to produce it. Existing communication tools are often expensive, English-only, or need a constant internet connection few Bangladeshi families can rely on. The result: children who have so much to say, and no way to say it."
+    },
+    "solution": {
+      "eyebrow": "How it works",
+      "title": "Tap a picture. Hear a voice.",
+      "body": "A child taps a picture card — the app speaks the word aloud immediately, in natural-sounding Bangla or English, tuned with a softer, child-like pitch. Everything runs on the device itself: no data plan, no waiting, no dependency on a signal that might not reach a rural classroom."
+    },
+    "categories": {
+      "eyebrow": "Sixteen ways to communicate",
+      "title": "Every board speaks a child's everyday world"
+    },
+    "study": {
+      "eyebrow": "Learning, not just talking",
+      "title": "Bangla and English literacy, built in",
+      "body": "Beyond communication boards, the app teaches the Bangla alphabet (স্বরবর্ণ ও ব্যঞ্জনবর্ণ) and English letters with playful reveal animations, plus a free-form writing and drawing canvas."
+    },
+    "custom": {
+      "eyebrow": "Made personal",
+      "title": "Families add their own words",
+      "body": "Parents and teachers can add custom words with their own photos and recorded voices — a sibling's name, a favorite snack, a specific bus route. The app becomes a picture of that child's actual life, not a generic template."
+    },
+    "offline": {
+      "eyebrow": "Built for reality",
+      "title": "Works completely offline",
+      "body": "No wifi at school? No mobile data at home? It doesn't matter. Every word, every voice, every lesson is stored on the device itself from the moment it's activated."
+    },
+    "handover": {
+      "eyebrow": "From our hands to theirs",
+      "title": "How a device reaches a child",
+      "body": "Each tablet is prepared, loaded, and activated by the team before it ever reaches a family — a unique activation key ties the device to the project, and it works from the very first tap."
+    },
+    "version": {
+      "label": "Current version"
+    },
+    "cta": "Request a device for your school or family"
   }
 }

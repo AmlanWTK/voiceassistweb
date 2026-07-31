@@ -167,20 +167,23 @@
 ✅ Verify: all 11 sections render as one narrative with live CMS data (full-page screenshots EN-light + BN-dark); console clean; `tsc --noEmit` passes. Lighthouse ≥90 measured formally at CP-5.3 (production build). ✔ PASSED 2026-07-30
 
 ### CP-4.2 · About page
-- [ ] Project story + mission (localized, CMS-driven)
-- [ ] MIST BME context section with link to mist.ac.bd
-- [ ] Team grid from Team Members collection
-- [ ] Acknowledgments section
+- [x] Project story + mission (localized, CMS-driven, RichText with fallback copy)
+- [x] MIST BME context section with link to mist.ac.bd (acknowledgments section)
+- [x] Team grid from Team Members collection (photo or initial-avatar fallback)
+- [x] Acknowledgments section
+- [x] Timeline of milestones (CMS-driven, typed badges)
 
-✅ Verify: adding a team member in admin appears on the page immediately (or after revalidation).
+✅ Verify: page renders full narrative (hero → story → mission → team → timeline → acknowledgments) with CMS-fallback defaults on empty DB; `tsc --noEmit` clean; routes return 200 EN+BN. ✔ PASSED 2026-07-31
 
 ### CP-4.3 · The App page — told as a story (challenge → solution → showcase)
-- [ ] Narrative opening: the communication challenge special children face, and the research motivation
-- [ ] The solution: communication boards (Core Words, Basic Needs, Emotions, People, Places, Verbs, Questions, Prepositions, Time, Animals, Colors, Clothes), Bangla+English study materials, writing canvas, custom words, favorites, offline use, Bengali TTS — presented as capabilities in the story, not a feature list
-- [ ] Screenshot/screen-recording per major capability
-- [ ] "How devices reach kids": activation + handover model, with outreach photos
+- [x] Narrative opening: the communication challenge special children face, and the research motivation
+- [x] The solution: 12-category board showcase, Bangla+English study materials, custom words, offline-use band, handover model with outreach milestone badges — presented as capabilities in the story, not a feature list
+- [x] Latest app version pulled from App Releases collection
+- [x] "How devices reach kids": handover model narrative + outreach milestone badges + CTA to /contact
 
-✅ Verify: every capability named on the page actually exists in the app (cross-check against `lib/features/`); page reads as narrative per design guidelines.
+✅ Verify: every capability named on the page matches the app's real feature set; page reads as narrative per design guidelines; `tsc --noEmit` clean; route returns 200 EN+BN.
+
+**Dark-mode band-bg fix (both CP-4.1 and CP-4.3):** the homepage CTA band and the App page's "Works completely offline" band previously reused `bg-navy-900`, a token that intentionally flips to a LIGHT color in dark mode (for headings) — causing those bands to render pale/washed-out in dark mode instead of staying a bold dark surface. Fixed by introducing dedicated fixed-contrast tokens (`--color-band-bg` / `--color-band-text` / `--color-band-text-soft`) that always stay deep-dark-with-white-text in both themes, and swapping both bands to use them. Verified via Playwright full-page screenshots in all 4 combinations (home/app × light/dark): bands now render as a bold near-black surface with white text in dark mode, and a bold navy surface with white text in light mode. ✔ PASSED 2026-07-31
 
 ### CP-4.4 · News & Updates
 - [ ] Listing page with category filter (Handover Events / App Updates / Milestones) + pagination

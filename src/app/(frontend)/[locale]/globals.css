@@ -39,6 +39,13 @@
   --color-butter-border: #f0e1a0;
   --color-butter-glow: #e8ce6e;
 
+  /* Fixed-contrast accent band — always a deep, confident surface with
+     light text, regardless of light/dark mode (CTA bands, emphasis
+     sections). Does NOT flip with theme, unlike navy-900/700. */
+  --color-band-bg: #1c2a4a;
+  --color-band-text: #ffffff;
+  --color-band-text-soft: rgb(255 255 255 / 0.8);
+
   /* Shape */
   --radius-card: 24px;
   --radius-btn: 12px;
@@ -102,6 +109,10 @@
 
   --shadow-soft: 0 10px 20px rgb(0 0 0 / 0.5);
   color-scheme: dark;
+
+  /* Deep accent band stays deep in dark mode too — near-black olive,
+     always darker than the surrounding surface, always white text. */
+  --color-band-bg: #0a0d07;
 }
 
 /* OS preference fallback — applies when the user hasn't chosen explicitly */

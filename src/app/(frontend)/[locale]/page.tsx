@@ -284,11 +284,11 @@ export default async function HomePage(props: { params: Promise<{ locale: string
       )}
 
       {/* 11 · Call to action */}
-      <section className="bg-navy-900">
+      <section className="bg-band-bg">
         <div className="mx-auto max-w-4xl px-4 py-20 text-center sm:px-6">
           <Reveal>
-            <h2 className="text-3xl font-bold text-surface sm:text-4xl dark:text-bg">{t('cta.title')}</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-surface/80 dark:text-bg/80">
+            <h2 className="text-3xl font-bold text-band-text sm:text-4xl">{t('cta.title')}</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-band-text-soft">
               {t('cta.body')}
             </p>
             <ButtonLink href="/contact" size="lg" className="mt-9">
