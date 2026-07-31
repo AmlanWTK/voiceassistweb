@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
 
 export type GalleryImage = { id: string | number; url: string; alt: string }
@@ -8,12 +8,23 @@ export type GalleryImage = { id: string | number; url: string; alt: string }
 /** Responsive image grid with a keyboard-navigable lightbox — click a photo
  *  to open it full-size, arrow keys / on-screen buttons to move between
  *  photos, Escape or the close button to dismiss. All images passed in have
- *  already been consent-filtered server-side (see consentCleared()). */
+ *  already been consent-filtered server-side (see consentCleared()).
+ *
+ *  Focus management (CP-5.2): opening the dialog moves focus to its close
+ *  button; Tab is trapped among the dialog's own buttons while it's open;
+ *  closing (via Escape, the close button, or the backdrop) returns focus to
+ *  whichever thumbnail opened it, so keyboard users never lose their place. */
 export function AlbumGallery({ images }: { images: GalleryImage[] }) {
   const t = useTranslations('galleryPage.lightbox')
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const closeBtnRef = useRef<HTMLButtonElement>(null)
+  const triggerRef = useRef<HTMLButtonElement | null>(null)
 
-  const close = useCallback(() => setOpenIndex(null), [])
+  const close = useCallback(() => {
+    setOpenIndex(null)
+    triggerRef.current?.focus()
+  }, [])
   const prev = useCallback(
     () => setOpenIndex((i) => (i === null ? null : (i - 1 + images.length) % images.length)),
     [images.length],
@@ -25,10 +36,30 @@ export function AlbumGallery({ images }: { images: GalleryImage[] }) {
 
   useEffect(() => {
     if (openIndex === null) return
+    closeBtnRef.current?.focus()
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close()
+      if (e.key === 'Escape') {
+        close()
+        return
+      }
       if (e.key === 'ArrowLeft') prev()
       if (e.key === 'ArrowRight') next()
+      if (e.key === 'Tab') {
+        // Simple focus trap: cycle Tab/Shift+Tab among the dialog's own
+        // focusable buttons instead of letting it escape to the page behind.
+        const focusable = dialogRef.current?.querySelectorAll<HTMLElement>('button')
+        if (!focusable || focusable.length === 0) return
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -43,7 +74,10 @@ export function AlbumGallery({ images }: { images: GalleryImage[] }) {
           <button
             key={img.id}
             type="button"
-            onClick={() => setOpenIndex(i)}
+            onClick={(e) => {
+              triggerRef.current = e.currentTarget
+              setOpenIndex(i)
+            }}
             aria-label={t('open', { alt: img.alt })}
             className="group aspect-square overflow-hidden rounded-img border border-line focus-visible:outline-offset-4"
           >
@@ -60,6 +94,7 @@ export function AlbumGallery({ images }: { images: GalleryImage[] }) {
 
       {openIndex !== null && (
         <div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-label={t('label')}
@@ -67,6 +102,7 @@ export function AlbumGallery({ images }: { images: GalleryImage[] }) {
           onClick={close}
         >
           <button
+            ref={closeBtnRef}
             type="button"
             onClick={close}
             aria-label={t('close')}

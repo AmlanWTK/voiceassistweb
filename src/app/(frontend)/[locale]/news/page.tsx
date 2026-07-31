@@ -79,7 +79,7 @@ export default async function NewsPage(props: {
               aria-current={!category ? 'page' : undefined}
               className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
                 !category
-                  ? 'border-primary bg-primary text-white'
+                  ? 'border-primary-btn bg-primary-btn text-white'
                   : 'border-line bg-surface text-navy-700 hover:border-primary hover:text-primary'
               }`}
             >
@@ -92,7 +92,7 @@ export default async function NewsPage(props: {
                 aria-current={category === cat ? 'page' : undefined}
                 className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
                   category === cat
-                    ? 'border-primary bg-primary text-white'
+                    ? 'border-primary-btn bg-primary-btn text-white'
                     : 'border-line bg-surface text-navy-700 hover:border-primary hover:text-primary'
                 }`}
               >

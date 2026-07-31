@@ -107,7 +107,7 @@ export function ContactForm({ defaultType = 'contact' }: { defaultType?: Request
               aria-pressed={requestType === type}
               className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
                 requestType === type
-                  ? 'border-primary bg-primary text-white'
+                  ? 'border-primary-btn bg-primary-btn text-white'
                   : 'border-line bg-surface text-navy-700 hover:border-primary hover:text-primary'
               }`}
             >
@@ -158,7 +158,7 @@ export function ContactForm({ defaultType = 'contact' }: { defaultType?: Request
       </div>
 
       {(fieldError || status === 'error') && (
-        <p role="alert" className="text-sm font-medium text-red-600">
+        <p role="alert" className="text-sm font-medium text-error">
           {fieldError || errorMessage}
         </p>
       )}
@@ -166,7 +166,7 @@ export function ContactForm({ defaultType = 'contact' }: { defaultType?: Request
       <button
         type="submit"
         disabled={status === 'submitting'}
-        className="inline-flex items-center justify-center gap-2 rounded-btn bg-primary px-7 py-3.5 text-base font-semibold text-white shadow-soft transition-colors duration-200 hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-50"
+        className="inline-flex items-center justify-center gap-2 rounded-btn bg-primary-btn px-7 py-3.5 text-base font-semibold text-white shadow-soft transition-colors duration-200 hover:bg-primary-btn-hover disabled:pointer-events-none disabled:opacity-50"
       >
         {status === 'submitting' ? t('form.submitting') : t('form.submit')}
       </button>

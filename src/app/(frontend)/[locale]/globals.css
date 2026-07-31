@@ -17,6 +17,24 @@
   --color-primary: #2f6fb6;
   --color-primary-hover: #265c99;
 
+  /* Primary BUTTON background — distinct token from --color-primary.
+     In light mode the two colors are identical (both pass AA at 4.5:1
+     for white text and for text-on-surface), but in dark mode a single
+     olive-green hue cannot hit 4.5:1 contrast for BOTH "white text on
+     this background" AND "this color as text on the surface" at once —
+     one needs to be lighter (for link/text use), the other darker (for
+     white button-label use). See CP-5.2 in CHECKPOINTS.md. Any element
+     with WHITE TEXT ON A PRIMARY BACKGROUND (buttons, the skip-link,
+     filled pill toggles) must use bg-primary-btn, not bg-primary. */
+  --color-primary-btn: #2f6fb6;
+  --color-primary-btn-hover: #265c99;
+
+  /* Form validation error text — Tailwind's red-600 (#dc2626) reads at
+     only ~4.5:1 on light surfaces and drops below 4.5:1 on dark surfaces;
+     this token is tuned to clear AA (4.5:1) against both bg and surface
+     in both themes. See CP-5.2. */
+  --color-error: #b91c1c;
+
   /* Surfaces */
   --color-bg: #f5f6f8;
   --color-surface: #ffffff;
@@ -85,10 +103,17 @@
   --color-navy-900: #e7edd6; /* headings become warm light on dark */
   --color-navy-700: #c9d4ad;
 
-  /* Accents — olive-green primary, khaki-gold institutional accent */
-  --color-primary: #5e8a38;
-  --color-primary-hover: #71a145;
+  /* Accents — olive-green primary, khaki-gold institutional accent.
+     --color-primary/--color-primary-hover are tuned for TEXT use (links,
+     "See more" hints) — 4.7-5.3:1 against surface/bg. --color-primary-btn
+     is a separate, darker shade tuned so WHITE button labels stay above
+     4.5:1 against it; do not merge these two, see CP-5.2 note above. */
+  --color-primary: #68983e;
+  --color-primary-hover: #7ba854;
+  --color-primary-btn: #567f34;
+  --color-primary-btn-hover: #4a6d2c;
   --color-mist-green: #a9c25a; /* eyebrow/label green-gold, like MIST's section headings */
+  --color-error: #f87171;
 
   /* Pastel swatches — dimmed, olive-warmed night versions */
   --color-sky-bg: #22301f;
@@ -134,10 +159,17 @@
   --color-navy-900: #e7edd6; /* headings become warm light on dark */
   --color-navy-700: #c9d4ad;
 
-  /* Accents — olive-green primary, khaki-gold institutional accent */
-  --color-primary: #5e8a38;
-  --color-primary-hover: #71a145;
+  /* Accents — olive-green primary, khaki-gold institutional accent.
+     --color-primary/--color-primary-hover are tuned for TEXT use (links,
+     "See more" hints) — 4.7-5.3:1 against surface/bg. --color-primary-btn
+     is a separate, darker shade tuned so WHITE button labels stay above
+     4.5:1 against it; do not merge these two, see CP-5.2 note above. */
+  --color-primary: #68983e;
+  --color-primary-hover: #7ba854;
+  --color-primary-btn: #567f34;
+  --color-primary-btn-hover: #4a6d2c;
   --color-mist-green: #a9c25a; /* eyebrow/label green-gold, like MIST's section headings */
+  --color-error: #f87171;
 
   /* Pastel swatches — dimmed, olive-warmed night versions */
   --color-sky-bg: #22301f;
