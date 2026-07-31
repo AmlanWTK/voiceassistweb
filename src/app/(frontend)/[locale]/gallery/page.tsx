@@ -64,12 +64,22 @@ export default async function GalleryPage(props: { params: Promise<{ locale: str
               return (
                 <Reveal key={album.id} delay={(i % 6) * 80}>
                   <Link href={`/gallery/${album.slug}`}>
-                    <Card className="flex h-full flex-col overflow-hidden">
+                    <Card className="group flex h-full flex-col overflow-hidden">
                       <AlbumCoverMosaic images={coverTiles} totalCount={clearedImages.length} />
                       <div className="flex flex-1 flex-col p-6">
-                        <h2 className="text-lg font-bold leading-snug hover:text-primary">
-                          {album.title}
-                        </h2>
+                        <div className="flex items-start justify-between gap-3">
+                          <h2 className="text-lg font-bold leading-snug hover:text-primary">
+                            {album.title}
+                          </h2>
+                          <span
+                            aria-hidden="true"
+                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-navy-700 shadow-soft transition-transform duration-200 group-hover:translate-y-0.5"
+                          >
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="m6 9 6 6 6-6" />
+                            </svg>
+                          </span>
+                        </div>
                         <div className="mt-2 flex items-center gap-3 text-xs font-medium text-ink-soft">
                           {album.eventDate && (
                             <time>{format.dateTime(new Date(album.eventDate), { dateStyle: 'medium' })}</time>
@@ -79,9 +89,16 @@ export default async function GalleryPage(props: { params: Promise<{ locale: str
                           )}
                         </div>
                         {album.description && (
-                          <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">
-                            {album.description}
-                          </p>
+                          <div className="mt-2 flex-1">
+                            <p className="line-clamp-3 text-sm leading-relaxed text-ink-soft">
+                              {album.description}
+                            </p>
+                            {album.description.length > 140 && (
+                              <span className="mt-1 inline-block text-sm font-semibold text-primary">
+                                {t('seeMore')}
+                              </span>
+                            )}
+                          </div>
                         )}
                       </div>
                     </Card>

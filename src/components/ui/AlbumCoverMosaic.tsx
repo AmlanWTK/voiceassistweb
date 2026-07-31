@@ -3,10 +3,11 @@ import React from 'react'
 export type CoverImage = { id: string | number; url: string; alt: string }
 
 /**
- * Modern multi-photo album cover for the gallery listing grid — replaces a
- * single flat "cover image" with a small mosaic so an album's photos are
- * visible at a glance, before the visitor even opens it. Layout adapts to
- * how many consent-cleared photos the album actually has.
+ * Modern album cover for the gallery listing grid: a large hero photo with
+ * a thumbnail strip of the next few photos beneath it, and a "+N" badge on
+ * the last thumbnail when the album holds more than are shown. Replaces a
+ * single flat cover image so an album's photos are visible at a glance,
+ * before the visitor even opens it.
  */
 export function AlbumCoverMosaic({
   images,
@@ -19,62 +20,47 @@ export function AlbumCoverMosaic({
     return <div className="aspect-[4/3] w-full bg-sky-bg" />
   }
 
-  const tile = (img: CoverImage, className: string, extra?: React.ReactNode) => (
-    <div key={img.id} className={`relative overflow-hidden ${className}`}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={img.url}
-        alt={img.alt}
-        loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-      />
-      {extra}
-    </div>
-  )
+  const [hero, ...rest] = images
+  const thumbs = rest.slice(0, 3)
+  const hiddenCount = totalCount - images.length
 
-  const hiddenCount = totalCount - 4
-  const moreBadge =
-    hiddenCount > 0 ? (
-      <div className="absolute inset-0 flex items-center justify-center bg-black/50 text-lg font-bold text-white">
-        +{hiddenCount}
-      </div>
-    ) : undefined
-
-  // Single photo — full-bleed cover.
-  if (images.length === 1) {
-    return (
-      <div className="group aspect-[4/3] w-full">{tile(images[0], 'h-full w-full')}</div>
-    )
-  }
-
-  // Two photos — even split.
-  if (images.length === 2) {
-    return (
-      <div className="group grid aspect-[4/3] grid-cols-2 gap-0.5">
-        {tile(images[0], 'h-full w-full')}
-        {tile(images[1], 'h-full w-full')}
-      </div>
-    )
-  }
-
-  // Three photos — one large + two stacked.
-  if (images.length === 3) {
-    return (
-      <div className="group grid aspect-[4/3] grid-cols-2 gap-0.5">
-        {tile(images[0], 'h-full w-full row-span-2')}
-        <div className="grid grid-rows-2 gap-0.5">
-          {tile(images[1], 'h-full w-full')}
-          {tile(images[2], 'h-full w-full')}
-        </div>
-      </div>
-    )
-  }
-
-  // Four or more — 2x2 grid, "+N" overlay on the last tile when there's more.
-  const four = images.slice(0, 4)
   return (
-    <div className="group grid aspect-[4/3] grid-cols-2 grid-rows-2 gap-0.5">
-      {four.map((img, i) => tile(img, 'h-full w-full', i === 3 ? moreBadge : undefined))}
+    <div className="group">
+      <div className="aspect-[16/10] w-full overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={hero.url}
+          alt={hero.alt}
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      </div>
+
+      {thumbs.length > 0 && (
+        <div
+          className="grid gap-0.5 border-t border-line"
+          style={{ gridTemplateColumns: `repeat(${thumbs.length}, minmax(0, 1fr))` }}
+        >
+          {thumbs.map((img, i) => {
+            const isLast = i === thumbs.length - 1
+            return (
+              <div key={img.id} className="relative aspect-square overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={img.url}
+                  alt={img.alt}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+                {isLast && hiddenCount > 0 && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/55 text-sm font-bold text-white">
+                    +{hiddenCount}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

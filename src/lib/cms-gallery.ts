@@ -1,7 +1,4 @@
-import { getPayload } from 'payload'
-
-import config from '@/payload.config'
-import type { CmsLocale } from './cms'
+import { getPayloadSafe, type CmsLocale } from './cms'
 import type { GalleryAlbum, Media } from '@/payload-types'
 
 const safe = async <T>(fn: () => Promise<T>, fallback: T): Promise<T> => {
@@ -23,7 +20,8 @@ export const consentCleared = (media: number | Media | null | undefined): media 
 }
 
 export async function getGalleryListData(locale: CmsLocale) {
-  const payload = await getPayload({ config })
+  const payload = await getPayloadSafe()
+  if (!payload) return { albums: [] }
   const albums = await safe<GalleryAlbum[]>(
     () =>
       payload
@@ -35,7 +33,8 @@ export async function getGalleryListData(locale: CmsLocale) {
 }
 
 export async function getAlbumBySlug(locale: CmsLocale, slug: string) {
-  const payload = await getPayload({ config })
+  const payload = await getPayloadSafe()
+  if (!payload) return null
   return safe<GalleryAlbum | null>(
     () =>
       payload

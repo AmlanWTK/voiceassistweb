@@ -246,6 +246,8 @@
     },
     "photoCount": "{count, plural, one {# photo} other {# photos}}",
     "back": "All albums",
+    "seeMore": "See more",
+    "seeLess": "See less",
     "videos": {
       "eyebrow": "Videos",
       "title": "See the app in action"

@@ -5,6 +5,7 @@ import { setRequestLocale, getTranslations, getFormatter } from 'next-intl/serve
 import { getAlbumBySlug, consentCleared } from '@/lib/cms-gallery'
 import { mediaUrl, mediaAlt, type CmsLocale } from '@/lib/cms'
 import { AlbumGallery } from '@/components/AlbumGallery'
+import { ClampedText } from '@/components/ClampedText'
 import { Reveal } from '@/components/ui/Reveal'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { YouTubeEmbed } from '@/components/ui/YouTubeEmbed'
@@ -59,9 +60,15 @@ export default async function AlbumDetailPage(props: {
             )}
             <h1 className="mt-3 text-3xl font-bold leading-tight sm:text-4xl">{album.title}</h1>
             {album.description && (
-              <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-ink-soft">
-                {album.description}
-              </p>
+              <div className="mx-auto mt-4 max-w-2xl text-left">
+                <ClampedText
+                  text={album.description}
+                  lines={5}
+                  className="text-lg leading-relaxed text-ink-soft"
+                  moreLabel={t('seeMore')}
+                  lessLabel={t('seeLess')}
+                />
+              </div>
             )}
           </Reveal>
         </div>

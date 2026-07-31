@@ -4,10 +4,26 @@ import config from '@/payload.config'
 
 export type CmsLocale = 'en' | 'bn'
 
+/** Resolves the Payload instance, or null if it can't connect (e.g. a
+ *  dropped/idle-timed-out Postgres connection, common with pooled
+ *  serverless Postgres like Neon during local dev). Every getXxxData()
+ *  function below checks this before querying, so a transient DB hiccup
+ *  degrades the page to its fallback content instead of crashing it. */
+export async function getPayloadSafe() {
+  try {
+    return await getPayload({ config })
+  } catch (err) {
+    console.error('[cms] getPayload() failed — page will render with fallback content:', err)
+    return null
+  }
+}
+
 /** All data the homepage needs, fetched in parallel. Never throws — every
  *  slot degrades to null/[] so the page renders even with an empty CMS. */
 export async function getHomeData(locale: CmsLocale) {
-  const payload = await getPayload({ config })
+  const empty = { home: null, posts: [], stories: [], partners: [], outreach: [] }
+  const payload = await getPayloadSafe()
+  if (!payload) return empty
 
   const safe = async <T,>(fn: () => Promise<T>, fallback: T): Promise<T> => {
     try {

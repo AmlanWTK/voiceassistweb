@@ -1,10 +1,8 @@
-import { getPayload } from 'payload'
-
-import config from '@/payload.config'
-import type { CmsLocale } from './cms'
+import { getPayloadSafe, type CmsLocale } from './cms'
 
 export async function getAppPageData(locale: CmsLocale) {
-  const payload = await getPayload({ config })
+  const payload = await getPayloadSafe()
+  if (!payload) return { latestRelease: null, outreachMilestones: [] }
 
   const safe = async <T,>(fn: () => Promise<T>, fallback: T): Promise<T> => {
     try {

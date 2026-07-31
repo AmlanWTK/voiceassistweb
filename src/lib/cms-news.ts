@@ -1,7 +1,6 @@
-import { getPayload, type Where } from 'payload'
+import type { Where } from 'payload'
 
-import config from '@/payload.config'
-import type { CmsLocale } from './cms'
+import { getPayloadSafe, type CmsLocale } from './cms'
 import type { Post, AppRelease } from '@/payload-types'
 
 const PAGE_SIZE = 9
@@ -23,7 +22,8 @@ export async function getNewsListData(
   locale: CmsLocale,
   opts: { category?: PostCategory; page?: number } = {},
 ) {
-  const payload = await getPayload({ config })
+  const payload = await getPayloadSafe()
+  if (!payload) return { posts: [], totalPages: 1, currentPage: 1, totalDocs: 0, appReleases: [] }
   const page = Math.max(1, opts.page ?? 1)
 
   const where: Where = { _status: { equals: 'published' } }
@@ -67,7 +67,8 @@ export async function getNewsListData(
  *  published (drafts are already filtered out by the collection's public
  *  access rule, so an unpublished slug simply returns no docs here). */
 export async function getPostBySlug(locale: CmsLocale, slug: string) {
-  const payload = await getPayload({ config })
+  const payload = await getPayloadSafe()
+  if (!payload) return null
   return safe<Post | null>(
     () =>
       payload
