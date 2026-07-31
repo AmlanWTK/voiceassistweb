@@ -197,5 +197,41 @@
       "label": "Current version"
     },
     "cta": "Request a device for your school or family"
+  },
+  "newsPage": {
+    "hero": {
+      "eyebrow": "News & Updates",
+      "title": "The project keeps moving",
+      "lede": "Handover events, app updates, and milestones from the Voice Assistant team."
+    },
+    "filters": {
+      "all": "All"
+    },
+    "empty": {
+      "title": "No posts yet",
+      "body": "Check back soon — we post updates as they happen."
+    },
+    "pagination": {
+      "prev": "Previous",
+      "next": "Next",
+      "page": "Page {current} of {total}"
+    },
+    "readMore": "Read more",
+    "changelog": {
+      "eyebrow": "Version history",
+      "title": "App release notes"
+    }
+  },
+  "newsDetail": {
+    "back": "All news & updates",
+    "share": {
+      "label": "Share this story",
+      "copyLink": "Copy link",
+      "copied": "Link copied",
+      "facebook": "Share on Facebook",
+      "whatsapp": "Share on WhatsApp",
+      "email": "Share by email"
+    },
+    "notFoundBody": "This story doesn't exist or hasn't been published yet."
   }
 }

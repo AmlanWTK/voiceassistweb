@@ -186,12 +186,12 @@
 **Dark-mode band-bg fix (both CP-4.1 and CP-4.3):** the homepage CTA band and the App page's "Works completely offline" band previously reused `bg-navy-900`, a token that intentionally flips to a LIGHT color in dark mode (for headings) — causing those bands to render pale/washed-out in dark mode instead of staying a bold dark surface. Fixed by introducing dedicated fixed-contrast tokens (`--color-band-bg` / `--color-band-text` / `--color-band-text-soft`) that always stay deep-dark-with-white-text in both themes, and swapping both bands to use them. Verified via Playwright full-page screenshots in all 4 combinations (home/app × light/dark): bands now render as a bold near-black surface with white text in dark mode, and a bold navy surface with white text in light mode. ✔ PASSED 2026-07-31
 
 ### CP-4.4 · News & Updates
-- [ ] Listing page with category filter (Handover Events / App Updates / Milestones) + pagination
-- [ ] Post detail page: cover, rich body, image gallery, video embeds, publish date, share buttons
-- [ ] App Releases changelog feed on the App Updates tab
-- [ ] Only `published` posts visible publicly; drafts hidden
+- [x] Listing page with category filter (Handover Events / App Updates / Milestones) + pagination (page-size 9, `?category=&page=`)
+- [x] Post detail page: cover, rich body, image gallery, video embeds, publish date, share buttons (Facebook / WhatsApp / email / copy-link)
+- [x] App Releases changelog feed on the App Updates tab
+- [x] Only `published` posts visible publicly; drafts hidden (enforced by the Posts collection's existing access rule — `getPostBySlug`/`getNewsListData` never see drafts)
 
-✅ Verify: publish a post in admin → appears in listing; unpublish → disappears. Direct URL to a draft returns 404.
+✅ Verify: `tsc --noEmit` clean; `/en/news`, `/en/news?category=app-update`, `/bn/news` all return 200 with correct localized copy; a real published seed post ("First Device Handover at Dhaka School") renders correctly on both the listing card and its detail page in EN-light and BN-dark (Playwright screenshots, 0 console errors); direct URL to a non-existent/unpublished slug (`/en/news/this-slug-does-not-exist`) returns 404 via the shared locale `not-found.tsx`; App Updates tab shows real version history (v1.1.0, v1.0.0) pulled from the App Releases collection. ✔ PASSED 2026-07-31
 
 ### CP-4.5 · Gallery
 - [ ] Albums grid → album detail with lightbox image viewer
