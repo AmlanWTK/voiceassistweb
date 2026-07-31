@@ -233,5 +233,29 @@
       "email": "Share by email"
     },
     "notFoundBody": "This story doesn't exist or hasn't been published yet."
+  },
+  "galleryPage": {
+    "hero": {
+      "eyebrow": "Gallery",
+      "title": "Moments from the field",
+      "lede": "Photos and videos from handover events, workshops, and the children and families we work with."
+    },
+    "empty": {
+      "title": "No albums yet",
+      "body": "Photos and videos from our events will appear here soon."
+    },
+    "photoCount": "{count, plural, one {# photo} other {# photos}}",
+    "back": "All albums",
+    "videos": {
+      "eyebrow": "Videos",
+      "title": "See the app in action"
+    },
+    "lightbox": {
+      "label": "Photo viewer",
+      "open": "View larger image: {alt}",
+      "close": "Close",
+      "prev": "Previous photo",
+      "next": "Next photo"
+    }
   }
 }

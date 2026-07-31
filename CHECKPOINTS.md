@@ -194,11 +194,12 @@
 ✅ Verify: `tsc --noEmit` clean; `/en/news`, `/en/news?category=app-update`, `/bn/news` all return 200 with correct localized copy; a real published seed post ("First Device Handover at Dhaka School") renders correctly on both the listing card and its detail page in EN-light and BN-dark (Playwright screenshots, 0 console errors); direct URL to a non-existent/unpublished slug (`/en/news/this-slug-does-not-exist`) returns 404 via the shared locale `not-found.tsx`; App Updates tab shows real version history (v1.1.0, v1.0.0) pulled from the App Releases collection. ✔ PASSED 2026-07-31
 
 ### CP-4.5 · Gallery
-- [ ] Albums grid → album detail with lightbox image viewer
-- [ ] Video section with lazy YouTube embeds
-- [ ] Only consent-cleared media displayable
+- [x] Albums grid → album detail with lightbox image viewer (keyboard arrows/Escape, click-outside-to-close, prev/next for multi-image albums)
+- [x] Video section with lazy YouTube embeds (reuses the shared `YouTubeEmbed` component + captions)
+- [x] Only consent-cleared media displayable (defensive `consentCleared()` filter in `lib/cms-gallery.ts`, on top of the Media collection's save-time consent validation from Phase 2)
+- [x] Album cards on the listing grid show a multi-photo mosaic cover (1 large + 2 stacked for 3 photos, 2×2 with a "+N" overlay for 4+) instead of a single flat image — added after user feedback that a single-photo cover looked plain for albums with several photos already uploaded.
 
-✅ Verify: images load responsively (correct srcset sizes); a non-consented image cannot be attached to a public album.
+✅ Verify: `tsc --noEmit` clean; `/en/gallery`, `/bn/gallery` return 200; seeded a real test album via the local API and confirmed end-to-end: listing card shows cover + photo count + date, detail page renders images in a responsive grid, clicking a photo opens the lightbox (Playwright screenshot confirms overlay/close button/large image), video section renders with lazy-load thumbnail + play button + caption; direct URL to a non-existent album slug returns 404; 0 console errors in light/dark and EN/BN. Found and fixed a real bug during verification: `youTubeId()` was defined inside a `'use client'` file and could not be called from the Server Component pages that filter video arrays — this silently crashed both `/news/[slug]` and `/gallery/[slug]` whenever a post/album actually had video embeds (previously masked because `.filter()` never invokes its callback on an empty array, so the CP-4.4 seed post's empty `youtubeUrls` never took this path). Fixed by moving `youTubeId` into a plain server-safe `src/lib/youtube.ts` shared by both the client embed component and the server pages. ✔ PASSED 2026-07-31
 
 ### CP-4.6 · Contact / Request a Device page
 - [ ] Localized form with type selector (general contact / device request)

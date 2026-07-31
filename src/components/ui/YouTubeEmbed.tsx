@@ -2,13 +2,7 @@
 
 import React, { useState } from 'react'
 
-/** Extracts the video id from youtube.com/watch, youtu.be, shorts, embed URLs. */
-export const youTubeId = (url: string): string | null => {
-  const m = url.match(
-    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/,
-  )
-  return m ? m[1] : null
-}
+import { youTubeId } from '@/lib/youtube'
 
 /**
  * Lazy YouTube embed: renders only the thumbnail (fast, no layout shift,
