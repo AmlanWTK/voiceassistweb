@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
 export type GalleryImage = { id: string | number; url: string; alt: string }
@@ -79,14 +80,15 @@ export function AlbumGallery({ images }: { images: GalleryImage[] }) {
               setOpenIndex(i)
             }}
             aria-label={t('open', { alt: img.alt })}
-            className="group aspect-square overflow-hidden rounded-img border border-line focus-visible:outline-offset-4"
+            className="group relative aspect-square overflow-hidden rounded-img border border-line focus-visible:outline-offset-4"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={img.url}
               alt={img.alt}
+              fill
               loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(min-width: 768px) 25vw, (min-width: 640px) 33vw, 50vw"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
           </button>
         ))}
@@ -129,6 +131,13 @@ export function AlbumGallery({ images }: { images: GalleryImage[] }) {
             </button>
           )}
 
+          {/* Intentionally a plain <img>, not next/image: this is the
+              full-resolution lightbox view, sized by max-h/max-w against
+              each photo's own (unknown-in-advance) aspect ratio — next/image
+              needs either fixed dimensions or a pre-sized `fill` container,
+              neither of which fits a viewer meant to show the photo at its
+              natural proportions. It's also only ever mounted after a click,
+              so it never affects initial page-load performance. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={images[openIndex].url}

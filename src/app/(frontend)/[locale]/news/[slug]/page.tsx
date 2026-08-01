@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { setRequestLocale, getTranslations, getFormatter } from 'next-intl/server'
 import { RichText } from '@payloadcms/richtext-lexical/react'
@@ -91,12 +92,16 @@ export default async function NewsDetailPage(props: {
 
         {cover && (
           <Reveal delay={80}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={cover}
-              alt={mediaAlt(post.coverImage)}
-              className="mt-8 aspect-[16/9] w-full rounded-card border border-line object-cover shadow-soft"
-            />
+            <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-card border border-line shadow-soft">
+              <Image
+                src={cover}
+                alt={mediaAlt(post.coverImage)}
+                fill
+                sizes="(min-width: 768px) 768px, 100vw"
+                priority
+                className="object-cover"
+              />
+            </div>
           </Reveal>
         )}
 
@@ -122,13 +127,16 @@ export default async function NewsDetailPage(props: {
               const url = mediaUrl(img, 'card')
               if (!url) return null
               return (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={i}
-                  src={url}
-                  alt={mediaAlt(img)}
-                  className="aspect-square w-full rounded-img border border-line object-cover"
-                />
+                <div key={i} className="relative aspect-square w-full overflow-hidden rounded-img border border-line">
+                  <Image
+                    src={url}
+                    alt={mediaAlt(img)}
+                    fill
+                    loading="lazy"
+                    sizes="(min-width: 640px) 33vw, 50vw"
+                    className="object-cover"
+                  />
+                </div>
               )
             })}
           </Reveal>

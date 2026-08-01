@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 
 export type CoverImage = { id: string | number; url: string; alt: string }
 
@@ -26,12 +27,13 @@ export function AlbumCoverMosaic({
 
   return (
     <div className="group">
-      <div className="aspect-[16/10] w-full overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+      <div className="relative aspect-[16/10] w-full overflow-hidden">
+        <Image
           src={hero.url}
           alt={hero.alt}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          fill
+          sizes="(min-width: 768px) 33vw, 100vw"
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
 
@@ -44,12 +46,13 @@ export function AlbumCoverMosaic({
             const isLast = i === thumbs.length - 1
             return (
               <div key={img.id} className="relative aspect-square overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={img.url}
                   alt={img.alt}
+                  fill
                   loading="lazy"
-                  className="h-full w-full object-cover"
+                  sizes="(min-width: 768px) 11vw, 33vw"
+                  className="object-cover"
                 />
                 {isLast && hiddenCount > 0 && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/55 text-sm font-bold text-white">

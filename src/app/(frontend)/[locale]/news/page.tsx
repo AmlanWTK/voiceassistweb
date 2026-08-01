@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 import { setRequestLocale, getTranslations, getFormatter } from 'next-intl/server'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
@@ -118,12 +119,16 @@ export default async function NewsPage(props: {
                 <Reveal key={p.id} delay={(i % 6) * 80}>
                   <Card className="flex h-full flex-col overflow-hidden">
                     {cover && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={cover}
-                        alt={mediaAlt(p.coverImage)}
-                        className="aspect-[16/9] w-full object-cover"
-                      />
+                      <div className="relative aspect-[16/9] w-full">
+                        <Image
+                          src={cover}
+                          alt={mediaAlt(p.coverImage)}
+                          fill
+                          loading="lazy"
+                          sizes="(min-width: 768px) 33vw, 100vw"
+                          className="object-cover"
+                        />
+                      </div>
                     )}
                     <div className="flex flex-1 flex-col p-6">
                       <div className="flex items-center gap-3">

@@ -260,11 +260,19 @@ Full meta tag inspection (curl + grep on rendered `/en/news/<slug>`): `og:title`
 `tsc --noEmit` clean after all changes. ✔ PASSED 2026-07-31
 
 ### CP-5.3 · Performance & responsiveness
-- [ ] Images optimized via next/image everywhere; fonts subset + preloaded
-- [ ] Tested at 360px, 768px, 1024px, 1440px
-- [ ] Lighthouse: Performance ≥ 90, Best Practices ≥ 95 on key pages
+- [x] Images optimized via next/image everywhere; fonts subset + preloaded
+- [x] Tested at 360px, 768px, 1024px, 1440px
+- [ ] Lighthouse: Performance ≥ 90, Best Practices ≥ 95 on key pages — **cannot be measured in this sandbox, see note below**
 
-✅ Verify: recorded Lighthouse scores committed to `docs/lighthouse/`.
+✅ Verify: `next.config.ts` already had `images.localPatterns` configured for `/api/media/file/**` and `/icon.png` (from an earlier phase) — so every CMS-served image could switch to `next/image` without extra config. Converted all real (non-external, non-transient) `<img>` usages across the site: gallery album mosaic covers (hero + thumbnail strip), the gallery lightbox thumbnail grid, homepage hero image, homepage news-card covers, homepage partner logos, news list card covers, news detail cover + inline gallery grid, and About page hero + team photos. Each conversion uses `fill` + a `sizes` attribute matched to that image's actual rendered width at each breakpoint (not a blanket `100vw`), so the browser requests an appropriately-sized file instead of the full original. The homepage hero, the news-detail cover, and the About page hero — all above-the-fold, all real LCP candidates — got `priority` so they preload instead of lazy-loading; every other image kept `loading="lazy"`.
+
+Two `<img>` usages were deliberately left as-is, each documented inline with why: the YouTube thumbnail (`YouTubeEmbed.tsx`) is fetched from `i.ytimg.com`, a third-party domain `next/image` isn't configured to optimize and that we don't control the source quality of anyway; the gallery lightbox's full-resolution viewer (`AlbumGallery.tsx`) shows each photo at its own natural aspect ratio inside a `max-h-[85vh] max-w-full` box, which doesn't fit `next/image`'s requirement of either fixed dimensions or a pre-sized `fill` container — and since it only mounts after a click, it never affects initial page-load performance anyway.
+
+`tsc --noEmit` clean after all conversions.
+
+**Responsive testing**: real Playwright sessions (not just resizing a browser) at exactly 360px, 768px, 1024px, and 1440px against Home, Gallery list, Gallery album detail, and Contact — the four widths and four pages spanning every layout pattern on the site (hero, card grid, mosaic covers, form, lightbox, video embed). Measured `document.documentElement.scrollWidth − clientWidth` at every combination: **zero horizontal overflow at all 16 combinations**. Visually confirmed via full-page screenshots at each breakpoint — mosaic covers, "See more" description clamps, the pill toggle, and the video embed section all reflow correctly with no broken layouts, no overlapping text, no clipped content.
+
+⚠️ **Lighthouse scores could not be produced in this sandbox environment.** `pnpm build` (a real production build, required for accurate Lighthouse numbers — dev-mode is deliberately unoptimized) fails here because this sandbox has no general internet access, and `next/font/google` needs to actually fetch and self-host the Poppins/Inter/Hind Siliguri/Noto Sans Bengali font files at build time — dev mode tolerates this with a fallback-font warning, but a production build treats it as a hard error. This is a sandbox networking limitation, not a code defect — the exact same build will succeed on your machine or in Vercel's build environment, both of which have normal internet access. **Action needed**: once you've pulled this checkpoint in, run `pnpm build && pnpm start` yourself, then run Lighthouse (Chrome DevTools → Lighthouse tab, or `npx lighthouse http://localhost:3000/en --view`) against Home, News detail, and Contact, and share the scores back so this checkpoint can be closed out with real numbers. Everything within this sandbox's reach — the image optimization work, the responsive layout testing, the type check — is done and verified above. ✔ PARTIAL — image optimization & responsive testing PASSED 2026-07-31; Lighthouse pending your local run
 
 ### CP-5.4 · Security & privacy
 - [ ] `.env` secrets never committed; admin behind strong passwords

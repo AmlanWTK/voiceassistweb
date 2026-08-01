@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 import { setRequestLocale, getTranslations, getFormatter } from 'next-intl/server'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
@@ -56,12 +57,16 @@ export default async function AboutPage(props: { params: Promise<{ locale: strin
 
       {heroImg && (
         <Reveal className="mx-auto -mt-10 max-w-5xl px-4 sm:px-6">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={heroImg}
-            alt={mediaAlt(about?.heroImage)}
-            className="aspect-[21/9] w-full rounded-card border border-line object-cover shadow-soft"
-          />
+          <div className="relative aspect-[21/9] w-full overflow-hidden rounded-card border border-line shadow-soft">
+            <Image
+              src={heroImg}
+              alt={mediaAlt(about?.heroImage)}
+              fill
+              priority
+              sizes="(min-width: 1024px) 1024px, 100vw"
+              className="object-cover"
+            />
+          </div>
         </Reveal>
       )}
 
@@ -109,12 +114,16 @@ export default async function AboutPage(props: { params: Promise<{ locale: strin
               return (
                 <Reveal key={member.id} delay={(i % 4) * 80} className="text-center">
                   {photo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={photo}
-                      alt={mediaAlt(member.photo) || member.name}
-                      className="mx-auto h-24 w-24 rounded-full border border-line object-cover shadow-soft"
-                    />
+                    <div className="relative mx-auto h-24 w-24 overflow-hidden rounded-full border border-line shadow-soft">
+                      <Image
+                        src={photo}
+                        alt={mediaAlt(member.photo) || member.name}
+                        fill
+                        loading="lazy"
+                        sizes="96px"
+                        className="object-cover"
+                      />
+                    </div>
                   ) : (
                     <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full border border-line bg-sky-bg font-heading text-2xl font-bold text-navy-900 shadow-soft">
                       {member.name.charAt(0)}

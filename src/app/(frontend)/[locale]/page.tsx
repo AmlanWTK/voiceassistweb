@@ -85,11 +85,14 @@ export default async function HomePage(props: { params: Promise<{ locale: string
           </Reveal>
           <Reveal delay={150} className="relative">
             {heroImg ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={heroImg}
                 alt={mediaAlt(home?.hero?.image)}
-                className="w-full rounded-card border border-line object-cover shadow-soft"
+                width={800}
+                height={600}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                priority
+                className="h-auto w-full rounded-card border border-line object-cover shadow-soft"
               />
             ) : (
               <div className="relative mx-auto flex aspect-[4/3] w-full max-w-md items-center justify-center rounded-card border border-line bg-surface shadow-soft">
@@ -212,8 +215,15 @@ export default async function HomePage(props: { params: Promise<{ locale: string
                 <Reveal key={p.id} delay={i * 100}>
                   <Card className="flex h-full flex-col overflow-hidden">
                     {cover && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={cover} alt={mediaAlt(p.coverImage)} className="aspect-[16/9] w-full object-cover" />
+                      <div className="relative aspect-[16/9] w-full">
+                        <Image
+                          src={cover}
+                          alt={mediaAlt(p.coverImage)}
+                          fill
+                          sizes="(min-width: 768px) 33vw, 100vw"
+                          className="object-cover"
+                        />
+                      </div>
                     )}
                     <div className="flex flex-1 flex-col p-6">
                       <div className="flex items-center gap-3">
@@ -283,8 +293,13 @@ export default async function HomePage(props: { params: Promise<{ locale: string
             {partners.map((p) => {
               const logo = mediaUrl(p.logo, 'thumb')
               const inner = logo ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={logo} alt={p.name} className="h-14 w-auto object-contain opacity-80 transition-opacity hover:opacity-100" />
+                <Image
+                  src={logo}
+                  alt={p.name}
+                  width={160}
+                  height={56}
+                  className="h-14 w-auto object-contain opacity-80 transition-opacity hover:opacity-100"
+                />
               ) : (
                 <span className="font-heading text-lg font-bold text-navy-700">{p.name}</span>
               )
