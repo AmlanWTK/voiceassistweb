@@ -26,6 +26,29 @@ import { SiteSettings } from './globals/SiteSettings'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+/** CP-5.4: PAYLOAD_SECRET signs every admin auth JWT — it must never
+ *  silently fall back to an empty string. An empty secret is a fixed,
+ *  publicly-known value, which would let anyone forge a valid admin
+ *  session token. Fail loudly at boot instead of starting up insecure. */
+if (!process.env.PAYLOAD_SECRET) {
+  throw new Error(
+    'PAYLOAD_SECRET is not set. Refusing to start with an empty JWT signing secret — ' +
+      'set a long, random PAYLOAD_SECRET in your .env before running the app.',
+  )
+}
+
+/** CP-5.4: with no `csrf` allowlist configured, Payload's own CSRF check
+ *  (auth/extractJWT.js) is a no-op — it falls straight through to trusting
+ *  the auth cookie regardless of request Origin, leaving only the cookie's
+ *  `SameSite: Lax` attribute as protection. Explicitly allowlisting the
+ *  real site origin restores Payload's origin check as a second, independent
+ *  layer of defense. Kept as a plain string (not the '@/lib/seo' helper) so
+ *  this config has no dependency on the Next app tree during Payload boot. */
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://voiceassistant.mist.ac.bd').replace(
+  /\/$/,
+  '',
+)
+
 export default buildConfig({
   // Content localization (CP-1.4): every localized field stores EN + BN
   localization: {
@@ -57,7 +80,8 @@ export default buildConfig({
   ],
   globals: [HomePage, AboutPage, SiteSettings],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET,
+  csrf: [SITE_URL, 'http://localhost:3000'],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },

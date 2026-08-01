@@ -299,5 +299,55 @@
       "privacyNote": "Any photos or information you share with us are handled per our",
       "privacyLink": "Privacy & Child Safety policy"
     }
+  },
+  "privacyPage": {
+    "hero": {
+      "eyebrow": "PRIVACY & CHILD SAFETY",
+      "title": "Privacy & Child Safety Policy",
+      "lede": "How we collect, use, and protect information on this website — and the extra safeguards we apply to any photo or story involving a child.",
+      "updated": "Last updated: August 2026"
+    },
+    "sections": {
+      "whoWeAre": {
+        "title": "Who we are",
+        "body": "This website is run by the Voice Assistant project team in the Department of Biomedical Engineering, Military Institute of Science and Technology (MIST), Dhaka, Bangladesh. Voice Assistant is a free, offline, Bangla-first AAC (Augmentative and Alternative Communication) app built to help special-needs children communicate. This page explains how we handle information on this website — it does not describe how the Voice Assistant mobile app itself works, since the app runs entirely offline on a user's own device and never sends any personal data anywhere."
+      },
+      "dataWeCollect": {
+        "title": "Information we collect",
+        "body": "We collect information in three ways.\n\n1. Contact & device-request forms — when you use our contact form, we collect your name, email address, and whatever else you choose to share (organization, phone number, and your message). If you're requesting a device on behalf of a child, we may ask for basic details needed to coordinate the handover.\n\n2. Photos, videos, and stories — we publish photos and videos from handover events, workshops, and stories from the families and professionals we work with. Any photo or video that could identify a child is never published without the written, informed consent of a parent or guardian — see \"How we handle photos and videos of children\" below.\n\n3. Minimal website cookies — we use only two small, functional cookies: one remembers your light/dark display preference, and one remembers whether you're viewing the site in English or Bangla. We do not use analytics, advertising, or tracking cookies of any kind, and we do not share your browsing activity with any third party."
+      },
+      "childConsent": {
+        "title": "How we handle photos and videos of children",
+        "body": "We take this seriously, and it's built directly into how our website works, not just a promise in this document.\n\nNo photo or video featuring an identifiable child is ever published without a signed consent form from a parent or guardian, kept on file by our team.\n\nThis is enforced technically, not just by policy — our content system will not let staff publish media marked as featuring a child unless that consent has been explicitly confirmed, and the website independently re-checks this before showing any image publicly.\n\nIf you're a parent or guardian and would like a photo or video of your child removed, or want to know what we have on file, contact us (details below) and we'll act on it promptly."
+      },
+      "howWeUse": {
+        "title": "How we use your information",
+        "body": "We use the information you share with us only to respond to your inquiry, coordinate a device handover or support request, and — only with your explicit permission — to feature your story on this website. We do not use your contact information for marketing, and we do not sell, rent, or trade it to anyone."
+      },
+      "sharing": {
+        "title": "Who we share information with",
+        "body": "We do not sell or share your personal information with third parties for their own purposes. Our website runs on standard cloud infrastructure providers (for hosting, database storage, and — if you request a device — coordinating that request), who process data only on our instructions and only as needed to run the site."
+      },
+      "retentionSecurity": {
+        "title": "How we protect and retain information",
+        "body": "We keep contact-form submissions only as long as needed to respond to you and coordinate any follow-up, and we apply reasonable technical and organizational safeguards — secure hosting, access limited to our team, encrypted connections — to protect it. No online system can be guaranteed 100% secure, but we work to keep your information as safe as we reasonably can."
+      },
+      "yourRights": {
+        "title": "Your rights",
+        "body": "You can ask us, at any time, what information we hold about you, ask us to correct it, or ask us to delete it — including withdrawing consent for a photo or story and having it taken down. Just reach out using the contact details below."
+      },
+      "childrenDirect": {
+        "title": "Children's use of this website",
+        "body": "This website is intended for parents, teachers, clinicians, and organizations — not for direct use by children. We do not knowingly collect personal information directly from children through this website; the photos and videos described above are shared with us by parents, guardians, or professionals working with a child, never collected from a child directly."
+      },
+      "changes": {
+        "title": "Changes to this policy",
+        "body": "We may update this policy as the project grows. If we make a meaningful change, we'll update the \"last updated\" date at the top of this page."
+      },
+      "contact": {
+        "title": "Contact us",
+        "body": "Questions about this policy, or requests about your own information, are welcome any time — reach us through our Contact page, or directly through the Department of Biomedical Engineering, MIST."
+      }
+    }
   }
 }
