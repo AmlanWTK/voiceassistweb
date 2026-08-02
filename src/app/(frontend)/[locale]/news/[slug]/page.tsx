@@ -53,6 +53,15 @@ export default async function NewsDetailPage(props: {
 
   const cover = mediaUrl(post.coverImage, 'hero')
   const galleryImages = Array.isArray(post.gallery) ? post.gallery : []
+  // CP-6.1 design update: a handover event usually has several photos (of
+  // different children/staff), not just one cover shot. The first couple of
+  // gallery images now ride along beside the cover as a small thumbnail
+  // cluster at the top of the article; anything beyond that still appears
+  // in the full "More photos" grid further down — each image renders in
+  // exactly one place, never both, which is what the old "same photo twice"
+  // layout got wrong.
+  const topThumbs = galleryImages.slice(0, 2)
+  const moreGalleryImages = galleryImages.slice(2)
   const youtubeUrls: { url: string }[] = Array.isArray(post.youtubeUrls) ? post.youtubeUrls : []
   const pageUrl = `${SITE_URL}/${locale}/news/${post.slug}`
 
@@ -79,40 +88,69 @@ export default async function NewsDetailPage(props: {
           <Link href="/news" className="text-sm font-semibold text-primary hover:underline">
             ← {t('back')}
           </Link>
-
-          <div className="mt-6 flex items-center gap-3">
-            <Badge tone={categoryTone[post.category] || 'sky'}>{tCat(post.category)}</Badge>
-            <time className="text-xs font-medium text-ink-soft">
-              {format.dateTime(new Date(post.publishedDate), { dateStyle: 'long' })}
-            </time>
-          </div>
-
-          <h1 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl">{post.title}</h1>
         </Reveal>
 
-        {cover && (
-          <Reveal delay={80}>
-            <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-card border border-line shadow-soft">
-              <Image
-                src={cover}
-                alt={mediaAlt(post.coverImage)}
-                fill
-                sizes="(min-width: 768px) 768px, 100vw"
-                priority
-                className="object-cover"
-              />
+        <Reveal delay={60} className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-start">
+          {cover && (
+            <div className="sm:w-2/5 sm:shrink-0">
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-card border border-line shadow-soft">
+                <Image
+                  src={cover}
+                  alt={mediaAlt(post.coverImage)}
+                  fill
+                  sizes="(min-width: 640px) 40vw, 100vw"
+                  priority
+                  className="object-cover"
+                />
+              </div>
+              {topThumbs.length > 0 && (
+                <div className="mt-3 grid grid-cols-2 gap-3">
+                  {topThumbs.map((img, i) => {
+                    const url = mediaUrl(img, 'card')
+                    if (!url) return null
+                    return (
+                      <div
+                        key={i}
+                        className="relative aspect-square w-full overflow-hidden rounded-img border border-line"
+                      >
+                        <Image
+                          src={url}
+                          alt={mediaAlt(img)}
+                          fill
+                          loading="lazy"
+                          sizes="20vw"
+                          className="object-cover"
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
             </div>
-          </Reveal>
-        )}
+          )}
 
-        <Reveal delay={120}>
+          <div className="flex-1">
+            <div className="flex items-center gap-3">
+              <Badge tone={categoryTone[post.category] || 'sky'}>{tCat(post.category)}</Badge>
+              <time className="text-xs font-medium text-ink-soft">
+                {format.dateTime(new Date(post.publishedDate), { dateStyle: 'long' })}
+              </time>
+            </div>
+            <h1 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl">{post.title}</h1>
+            {post.excerpt && (
+              <p className="mt-4 text-lg leading-relaxed text-ink-soft">{post.excerpt}</p>
+            )}
+          </div>
+        </Reveal>
+
+        <Reveal delay={140}>
           <div className="prose prose-lg mt-10 max-w-none leading-relaxed text-ink-soft">
             <RichText data={post.body} />
           </div>
         </Reveal>
 
         {youtubeUrls.length > 0 && (
-          <Reveal delay={160} className="mt-10 space-y-6">
+          <Reveal delay={180} className="mt-10 space-y-6">
             {youtubeUrls
               .filter((v) => youTubeId(v.url))
               .map((v) => (
@@ -121,24 +159,32 @@ export default async function NewsDetailPage(props: {
           </Reveal>
         )}
 
-        {galleryImages.length > 0 && (
-          <Reveal delay={200} className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
-            {galleryImages.map((img, i) => {
-              const url = mediaUrl(img, 'card')
-              if (!url) return null
-              return (
-                <div key={i} className="relative aspect-square w-full overflow-hidden rounded-img border border-line">
-                  <Image
-                    src={url}
-                    alt={mediaAlt(img)}
-                    fill
-                    loading="lazy"
-                    sizes="(min-width: 640px) 33vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
-              )
-            })}
+        {moreGalleryImages.length > 0 && (
+          <Reveal delay={220} className="mt-10">
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-mist-green">
+              {t('morePhotos')}
+            </h2>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {moreGalleryImages.map((img, i) => {
+                const url = mediaUrl(img, 'card')
+                if (!url) return null
+                return (
+                  <div
+                    key={i}
+                    className="relative aspect-square w-full overflow-hidden rounded-img border border-line"
+                  >
+                    <Image
+                      src={url}
+                      alt={mediaAlt(img)}
+                      fill
+                      loading="lazy"
+                      sizes="(min-width: 640px) 33vw, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
+                )
+              })}
+            </div>
           </Reveal>
         )}
 

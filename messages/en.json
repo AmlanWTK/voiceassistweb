@@ -232,7 +232,8 @@
       "whatsapp": "Share on WhatsApp",
       "email": "Share by email"
     },
-    "notFoundBody": "This story doesn't exist or hasn't been published yet."
+    "notFoundBody": "This story doesn't exist or hasn't been published yet.",
+    "morePhotos": "More photos"
   },
   "galleryPage": {
     "hero": {
