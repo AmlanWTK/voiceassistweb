@@ -60,7 +60,7 @@ export const ContactRequests: CollectionConfig = {
         try {
           await req.payload.sendEmail({
             to,
-            subject: `[Voice Assistant] New ${doc.requestType === 'device-request' ? 'device request' : 'contact message'} from ${doc.name}`,
+            subject: `[Voice Assist] New ${doc.requestType === 'device-request' ? 'device request' : 'contact message'} from ${doc.name}`,
             text: `Name: ${doc.name}\nOrganization: ${doc.organization || '-'}\nEmail: ${doc.email}\nPhone: ${doc.phone || '-'}\nType: ${doc.requestType}\n\nMessage:\n${doc.message}`,
           })
         } catch (err) {

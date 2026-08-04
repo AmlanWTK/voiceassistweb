@@ -50,7 +50,7 @@ export function Header() {
               href={href}
               aria-current={isActive(href) ? 'page' : undefined}
               className={cn(
-                'rounded-btn px-3 py-2 text-sm font-semibold transition-colors',
+                'rounded-btn px-3 py-2 text-sm font-semibold transition-[color,background-color,transform] duration-200 active:scale-95',
                 isActive(href)
                   ? 'bg-sky-bg text-navy-900'
                   : 'text-navy-700 hover:bg-sky-bg hover:text-navy-900',
@@ -73,9 +73,19 @@ export function Header() {
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={t('menu')}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-btn border border-line text-navy-900 lg:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-btn border border-line text-navy-900 transition-transform duration-200 active:scale-90 lg:hidden"
         >
-          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+          <svg
+            aria-hidden="true"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            className={cn('transition-transform duration-200', open && 'rotate-90')}
+          >
             {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
           </svg>
         </button>
@@ -86,7 +96,7 @@ export function Header() {
         <nav
           id="mobile-menu"
           aria-label="Main"
-          className="border-t border-line bg-surface px-4 pb-6 pt-3 lg:hidden"
+          className="menu-drop border-t border-line bg-surface px-4 pb-6 pt-3 lg:hidden"
         >
           <ul className="flex flex-col gap-1">
             {NAV.map(({ href, key }) => (
@@ -96,7 +106,7 @@ export function Header() {
                   onClick={() => setOpen(false)}
                   aria-current={isActive(href) ? 'page' : undefined}
                   className={cn(
-                    'block rounded-btn px-3 py-3 text-base font-semibold',
+                    'block rounded-btn px-3 py-3 text-base font-semibold transition-[background-color,color,transform] duration-200 active:scale-[0.97]',
                     isActive(href) ? 'bg-sky-bg text-navy-900' : 'text-navy-700 hover:bg-sky-bg',
                   )}
                 >

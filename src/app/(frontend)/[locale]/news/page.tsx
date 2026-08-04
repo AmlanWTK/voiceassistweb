@@ -117,16 +117,16 @@ export default async function NewsPage(props: {
               const cover = mediaUrl(p.coverImage, 'card')
               return (
                 <Reveal key={p.id} delay={(i % 6) * 80}>
-                  <Card className="flex h-full flex-col overflow-hidden">
+                  <Card className="group flex h-full flex-col overflow-hidden">
                     {cover && (
-                      <div className="relative aspect-[16/9] w-full">
+                      <div className="relative aspect-[16/9] w-full overflow-hidden">
                         <Image
                           src={cover}
                           alt={mediaAlt(p.coverImage)}
                           fill
                           loading="lazy"
                           sizes="(min-width: 768px) 33vw, 100vw"
-                          className="object-cover"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       </div>
                     )}
@@ -147,9 +147,15 @@ export default async function NewsPage(props: {
                       )}
                       <Link
                         href={`/news/${p.slug}`}
-                        className="mt-4 text-sm font-semibold text-primary hover:underline"
+                        className="group/link mt-4 inline-flex w-fit items-center gap-1 text-sm font-semibold text-primary hover:underline"
                       >
-                        {t('readMore')} →
+                        {t('readMore')}
+                        <span
+                          aria-hidden="true"
+                          className="inline-block transition-transform duration-200 group-hover/link:translate-x-1"
+                        >
+                          →
+                        </span>
                       </Link>
                     </div>
                   </Card>

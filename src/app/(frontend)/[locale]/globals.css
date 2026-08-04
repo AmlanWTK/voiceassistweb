@@ -263,3 +263,160 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* ---------- Micro-animations ----------
+ * Small, deliberately understated motion accents layered on top of the
+ * Reveal/StatTile entrance system above. All covered by the blanket
+ * prefers-reduced-motion override above (the universal *,::before,::after
+ * rule forces every animation/transition here down to ~0ms), so nothing
+ * extra is needed per-class for accessibility.
+ */
+
+/* Icon swap "pop" — used when a toggle's icon changes (e.g. ThemeToggle's
+ * sun/moon). Pair with `key={...}` on the icon so React remounts it and the
+ * animation replays each time. */
+@keyframes icon-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotate(-45deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+.icon-pop {
+  animation: icon-pop 300ms ease-out;
+}
+
+/* Same idea as icon-pop but without the rotation — for small pill/badge
+ * swaps (e.g. LanguageToggle's active-language indicator) where a rotated
+ * entrance would look odd on a text label rather than a symmetrical icon. */
+@keyframes pill-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.pill-pop {
+  animation: pill-pop 200ms ease-out;
+}
+
+/* Menu/dropdown entrance — used for the mobile nav panel. Enter-only (no
+ * exit animation) is a deliberate simplicity trade-off for something this
+ * small. */
+@keyframes menu-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.menu-drop {
+  animation: menu-drop 220ms ease-out;
+}
+
+/* Page transition — see template.tsx. Runs once per route change so
+ * navigating between pages isn't an instant hard cut. */
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-fade-in {
+  animation: page-fade-in 280ms ease-out;
+}
+
+/* Whole-card hover lift — opt-in per usage (news/gallery listing cards
+ * that are entirely clickable), not baked into the base Card so static,
+ * non-clickable Card usages (stat tiles, form containers) don't look
+ * interactive when they aren't. */
+.card-hover-lift {
+  transition: transform 200ms ease-out;
+}
+.card-hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* ---------- Custom cursor (desktop only) ----------
+ * See CustomCursor.tsx: it adds .custom-cursor-active to <html> only when
+ * the pointer is a mouse (not touch) and the user hasn't asked for reduced
+ * motion, so every rule below is inert until that class is present — the
+ * native cursor is never hidden unless the replacement is actually running.
+ */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 9999px;
+  opacity: 0;
+  transition:
+    opacity 200ms ease,
+    width 200ms ease,
+    height 200ms ease,
+    background-color 200ms ease;
+  will-change: transform;
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-mist-green);
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--color-mist-green);
+}
+
+.cursor-ring--hover {
+  width: 60px;
+  height: 60px;
+  background-color: color-mix(in srgb, var(--color-mist-green) 12%, transparent);
+}
+
+.cursor-dot--hover {
+  opacity: 0 !important;
+}
+
+.cursor-ring--active {
+  width: 28px;
+  height: 28px;
+}
+
+/* Hide the native arrow everywhere while the custom cursor is active, but
+ * keep the familiar text caret on editable fields — losing that would make
+ * it unclear you can click in and type. */
+html.custom-cursor-active,
+html.custom-cursor-active * {
+  cursor: none;
+}
+html.custom-cursor-active input:not([type='submit']):not([type='button']):not([type='checkbox']):not(
+    [type='radio']
+  ),
+html.custom-cursor-active textarea {
+  cursor: text;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}

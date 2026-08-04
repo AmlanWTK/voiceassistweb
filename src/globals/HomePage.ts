@@ -24,11 +24,39 @@ export const HomePage: GlobalConfig = {
     {
       name: 'stats',
       type: 'array',
-      admin: { description: 'Impact statistics (animated counters on the homepage).' },
+      admin: {
+        description:
+          'Impact statistics (animated counters on the homepage). Each stat is 3 separate boxes below — do NOT type "+" into Value or Label, use the Suffix box for that (it gets added automatically after the number).',
+      },
       fields: [
-        { name: 'value', type: 'number', required: true },
-        { name: 'suffix', type: 'text', admin: { description: 'e.g. "+" — shown after the number.' } },
-        { name: 'label', type: 'text', required: true, localized: true },
+        {
+          name: 'value',
+          type: 'number',
+          required: true,
+          admin: {
+            description: 'Just the number, e.g. 100 — no "+" or other symbols here.',
+            placeholder: '100',
+          },
+        },
+        {
+          name: 'suffix',
+          type: 'text',
+          admin: {
+            description:
+              'Optional symbol shown automatically right after the number, e.g. "+" turns "100" into "100+" on the page. Leave blank for an exact number.',
+            placeholder: '+',
+          },
+        },
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
+          localized: true,
+          admin: {
+            description: 'What the number counts, e.g. "Devices delivered" — no "+" here either.',
+            placeholder: 'Devices delivered',
+          },
+        },
       ],
     },
     {

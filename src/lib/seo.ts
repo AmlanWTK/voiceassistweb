@@ -88,7 +88,7 @@ export function organizationJsonLd(locale: string, description: string) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Voice Assistant',
+    name: 'Voice Assist',
     url: `${SITE_URL}/${locale}`,
     logo: `${SITE_URL}/icon.png`,
     description,
@@ -124,10 +124,10 @@ export function newsArticleJsonLd({
     image: image ? [absoluteUrl(image)] : undefined,
     datePublished: publishedDate,
     dateModified: updatedDate || publishedDate,
-    author: { '@type': 'Organization', name: 'Voice Assistant' },
+    author: { '@type': 'Organization', name: 'Voice Assist' },
     publisher: {
       '@type': 'Organization',
-      name: 'Voice Assistant',
+      name: 'Voice Assist',
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/icon.png` },
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },

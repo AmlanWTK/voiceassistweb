@@ -10,6 +10,7 @@ import { routing } from '@/i18n/routing'
 import { SITE_URL, buildMetadata } from '@/lib/seo'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
+import { CustomCursor } from '@/components/CustomCursor'
 import './globals.css'
 
 const inter = Inter({
@@ -59,9 +60,9 @@ export async function generateMetadata(props: {
     ...buildMetadata({
       locale,
       path: '',
-      title: 'Voice Assistant — Giving every child a voice',
+      title: 'Voice Assist — Giving every child a voice',
       description,
-      siteName: 'Voice Assistant',
+      siteName: 'Voice Assist',
     }),
   }
 }
@@ -94,6 +95,7 @@ export default async function LocaleLayout(props: {
     >
       <body>
         <NextIntlClientProvider>
+          <CustomCursor />
           <div className="flex min-h-screen flex-col">
             <Header />
             <main id="main-content" className="flex-1">

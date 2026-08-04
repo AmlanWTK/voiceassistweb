@@ -86,7 +86,7 @@ export default async function DesignPage(props: { params: Promise<{ locale: stri
         <Card className="p-8">
           <ol>
             <TimelineItem date="Sep 2025" type="research" typeLabel="Research" title="Project research begins" description="Needs assessment with special-education teachers and families." />
-            <TimelineItem date="Jun 2026" type="release" typeLabel="Release" title="Voice Assistant 1.0" description="First stable release with 16 communication categories in Bangla and English." />
+            <TimelineItem date="Jun 2026" type="release" typeLabel="Release" title="Voice Assist 1.0" description="First stable release with 16 communication categories in Bangla and English." />
             <TimelineItem date="Jul 2026" type="outreach" typeLabel="Outreach" title="First device handover" description="Devices delivered to the first partner school in Dhaka." isLast />
           </ol>
         </Card>

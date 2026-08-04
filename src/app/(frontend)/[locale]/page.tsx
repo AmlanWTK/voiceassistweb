@@ -213,15 +213,15 @@ export default async function HomePage(props: { params: Promise<{ locale: string
               const cover = mediaUrl(p.coverImage, 'card')
               return (
                 <Reveal key={p.id} delay={i * 100}>
-                  <Card className="flex h-full flex-col overflow-hidden">
+                  <Card className="group flex h-full flex-col overflow-hidden">
                     {cover && (
-                      <div className="relative aspect-[16/9] w-full">
+                      <div className="relative aspect-[16/9] w-full overflow-hidden">
                         <Image
                           src={cover}
                           alt={mediaAlt(p.coverImage)}
                           fill
                           sizes="(min-width: 768px) 33vw, 100vw"
-                          className="object-cover"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       </div>
                     )}

@@ -85,8 +85,17 @@ export default async function NewsDetailPage(props: {
       />
       <article className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
         <Reveal>
-          <Link href="/news" className="text-sm font-semibold text-primary hover:underline">
-            ← {t('back')}
+          <Link
+            href="/news"
+            className="group/back inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
+          >
+            <span
+              aria-hidden="true"
+              className="inline-block transition-transform duration-200 group-hover/back:-translate-x-1"
+            >
+              ←
+            </span>
+            {t('back')}
           </Link>
         </Reveal>
 

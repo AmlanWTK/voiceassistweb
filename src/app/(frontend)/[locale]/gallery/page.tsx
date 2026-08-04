@@ -71,7 +71,7 @@ export default async function GalleryPage(props: { params: Promise<{ locale: str
               return (
                 <Reveal key={album.id} delay={(i % 6) * 80}>
                   <Link href={`/gallery/${album.slug}`}>
-                    <Card className="group flex h-full flex-col overflow-hidden">
+                    <Card className="card-hover-lift group flex h-full flex-col overflow-hidden">
                       <AlbumCoverMosaic images={coverTiles} totalCount={clearedImages.length} />
                       <div className="flex flex-1 flex-col p-6">
                         <div className="flex items-start justify-between gap-3">

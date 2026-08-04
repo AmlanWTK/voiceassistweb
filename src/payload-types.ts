@@ -318,7 +318,7 @@ export interface GalleryAlbum {
   createdAt: string;
 }
 /**
- * Version history of the Voice Assistant app — powers the App Updates feed.
+ * Version history of the Voice Assist app — powers the App Updates feed.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "app-releases".
@@ -847,15 +847,21 @@ export interface HomePage {
     ctaLabel?: string | null;
   };
   /**
-   * Impact statistics (animated counters on the homepage).
+   * Impact statistics (animated counters on the homepage). Each stat is 3 separate boxes below — do NOT type "+" into Value or Label, use the Suffix box for that (it gets added automatically after the number).
    */
   stats?:
     | {
+        /**
+         * Just the number, e.g. 100 — no "+" or other symbols here.
+         */
         value: number;
         /**
-         * e.g. "+" — shown after the number.
+         * Optional symbol shown automatically right after the number, e.g. "+" turns "100" into "100+" on the page. Leave blank for an exact number.
          */
         suffix?: string | null;
+        /**
+         * What the number counts, e.g. "Devices delivered" — no "+" here either.
+         */
         label: string;
         id?: string | null;
       }[]

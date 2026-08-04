@@ -96,7 +96,7 @@ export default buildConfig({
     ? {
         email: nodemailerAdapter({
           defaultFromAddress: process.env.SMTP_FROM || 'noreply@voiceassistant.local',
-          defaultFromName: 'Voice Assistant Website',
+          defaultFromName: 'Voice Assist Website',
           transportOptions: {
             host: process.env.SMTP_HOST,
             port: Number(process.env.SMTP_PORT || 587),

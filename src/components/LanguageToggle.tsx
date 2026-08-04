@@ -30,7 +30,7 @@ export function LanguageToggle() {
           <span
             key={code}
             aria-current="true"
-            className="rounded-full bg-navy-900 px-3 py-1 text-sm font-semibold text-surface"
+            className="pill-pop rounded-full bg-navy-900 px-3 py-1 text-sm font-semibold text-surface"
           >
             {label}
           </span>
@@ -39,7 +39,7 @@ export function LanguageToggle() {
             key={code}
             href={pathname}
             locale={code}
-            className="rounded-full px-3 py-1 text-sm font-semibold text-navy-700 transition-colors hover:bg-sky-bg"
+            className="rounded-full px-3 py-1 text-sm font-semibold text-navy-700 transition-[background-color,transform] duration-200 hover:bg-sky-bg active:scale-90"
           >
             {label}
           </Link>

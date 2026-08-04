@@ -1,9 +1,9 @@
 {
   "site": {
-    "name": "Voice Assistant",
+    "name": "Voice Assist",
     "tagline": "Giving every child a voice.",
     "institution": "MIST · Department of Biomedical Engineering",
-    "underConstruction": "The official website for the Voice Assistant AAC app is under construction. News, device-handover updates, and stories are coming soon.",
+    "underConstruction": "The official website for the Voice Assist AAC app is under construction. News, device-handover updates, and stories are coming soon.",
     "visitMist": "Visit MIST"
   },
   "nav": {
@@ -60,7 +60,7 @@
     "solution": {
       "eyebrow": "Our solution",
       "title": "A voice in their own language",
-      "body": "Voice Assistant is a free, fully offline AAC app built by MIST researchers. A child taps a picture — the app speaks it aloud in natural Bangla or English. Sixteen communication categories, alphabet learning for both languages, a writing canvas, and words families can customize with their own photos and voices.",
+      "body": "Voice Assist is a free, fully offline AAC app built by MIST researchers. A child taps a picture — the app speaks it aloud in natural Bangla or English. Sixteen communication categories, alphabet learning for both languages, a writing canvas, and words families can customize with their own photos and voices.",
       "cta": "See how the app works"
     },
     "showcase": {
@@ -121,7 +121,7 @@
     "hero": {
       "eyebrow": "About the project",
       "title": "Built by engineers. Driven by families.",
-      "lede": "Voice Assistant began as a question from the Department of Biomedical Engineering, MIST: what would it take to give every special child in Bangladesh a way to be heard?"
+      "lede": "Voice Assist began as a question from the Department of Biomedical Engineering, MIST: what would it take to give every special child in Bangladesh a way to be heard?"
     },
     "story": {
       "eyebrow": "Our story"
@@ -142,7 +142,7 @@
     },
     "mistLink": "Learn more about MIST at mist.ac.bd",
     "fallback": {
-      "story": "Voice Assistant grew out of conversations with special-education teachers and parents in Dhaka, who described the same frustration again and again: their children understood so much more than they could say. The Department of Biomedical Engineering at MIST set out to build something different — an app that speaks a child's own language, works without an internet connection, and costs families nothing.\n\nWhat started as a research prototype is now a growing project: devices prepared, activated, and handed directly to children and their schools, with the team following up to learn what works and what needs to change.",
+      "story": "Voice Assist grew out of conversations with special-education teachers and parents in Dhaka, who described the same frustration again and again: their children understood so much more than they could say. The Department of Biomedical Engineering at MIST set out to build something different — an app that speaks a child's own language, works without an internet connection, and costs families nothing.\n\nWhat started as a research prototype is now a growing project: devices prepared, activated, and handed directly to children and their schools, with the team following up to learn what works and what needs to change.",
       "mission": "To give every special child in Bangladesh a reliable, dignified way to communicate — in Bangla, in English, anywhere, without needing a connection to do it.",
       "acknowledgments": "This project would not exist without the special-education teachers, therapists, and families who shared their time and insight, and the Department of Biomedical Engineering, Military Institute of Science and Technology, for its continued support."
     }
@@ -157,7 +157,7 @@
     "hero": {
       "eyebrow": "The App",
       "title": "A voice that fits in a backpack",
-      "lede": "Voice Assistant is a free, offline AAC (Augmentative and Alternative Communication) app — built so a child can carry their voice anywhere, no internet required."
+      "lede": "Voice Assist is a free, offline AAC (Augmentative and Alternative Communication) app — built so a child can carry their voice anywhere, no internet required."
     },
     "challenge": {
       "eyebrow": "The challenge",
@@ -202,7 +202,7 @@
     "hero": {
       "eyebrow": "News & Updates",
       "title": "The project keeps moving",
-      "lede": "Handover events, app updates, and milestones from the Voice Assistant team."
+      "lede": "Handover events, app updates, and milestones from the Voice Assist team."
     },
     "filters": {
       "all": "All"
@@ -311,7 +311,7 @@
     "sections": {
       "whoWeAre": {
         "title": "Who we are",
-        "body": "This website is run by the Voice Assistant project team in the Department of Biomedical Engineering, Military Institute of Science and Technology (MIST), Dhaka, Bangladesh. Voice Assistant is a free, offline, Bangla-first AAC (Augmentative and Alternative Communication) app built to help special-needs children communicate. This page explains how we handle information on this website — it does not describe how the Voice Assistant mobile app itself works, since the app runs entirely offline on a user's own device and never sends any personal data anywhere."
+        "body": "This website is run by the Voice Assist project team in the Department of Biomedical Engineering, Military Institute of Science and Technology (MIST), Dhaka, Bangladesh. Voice Assist is a free, offline, Bangla-first AAC (Augmentative and Alternative Communication) app built to help special-needs children communicate. This page explains how we handle information on this website — it does not describe how the Voice Assist mobile app itself works, since the app runs entirely offline on a user's own device and never sends any personal data anywhere."
       },
       "dataWeCollect": {
         "title": "Information we collect",

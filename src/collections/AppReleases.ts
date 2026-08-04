@@ -8,7 +8,7 @@ export const AppReleases: CollectionConfig = {
   admin: {
     useAsTitle: 'version',
     defaultColumns: ['version', 'platform', 'releaseDate'],
-    description: 'Version history of the Voice Assistant app — powers the App Updates feed.',
+    description: 'Version history of the Voice Assist app — powers the App Updates feed.',
   },
   defaultSort: '-releaseDate',
   access: {

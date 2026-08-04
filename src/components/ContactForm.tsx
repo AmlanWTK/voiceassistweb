@@ -7,7 +7,7 @@ type RequestType = 'contact' | 'device-request'
 type Status = 'idle' | 'submitting' | 'success' | 'error'
 
 const inputClass =
-  'w-full rounded-btn border border-line bg-surface px-4 py-2.5 text-ink placeholder:text-ink-soft/60 transition-colors focus:border-primary focus:outline-none'
+  'w-full rounded-btn border border-line bg-surface px-4 py-2.5 text-ink placeholder:text-ink-soft/60 transition-[border-color,box-shadow] duration-200 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10'
 
 /** Localized contact / device-request form. Submits directly to Payload's
  *  public REST create endpoint for the Contact Requests collection — the
@@ -79,7 +79,7 @@ export function ContactForm({ defaultType = 'contact' }: { defaultType?: Request
 
   if (status === 'success') {
     return (
-      <div className="rounded-card border border-line bg-mint-bg p-8 text-center">
+      <div className="pill-pop rounded-card border border-line bg-mint-bg p-8 text-center">
         <p className="text-xl font-bold text-navy-900">{t('success.title')}</p>
         <p className="mt-3 text-ink-soft">{t('success.body')}</p>
         <button
@@ -105,7 +105,7 @@ export function ContactForm({ defaultType = 'contact' }: { defaultType?: Request
               type="button"
               onClick={() => setRequestType(type)}
               aria-pressed={requestType === type}
-              className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
+              className={`rounded-full border px-4 py-2 text-sm font-semibold transition-[color,background-color,border-color,transform] duration-200 active:scale-95 ${
                 requestType === type
                   ? 'border-primary-btn bg-primary-btn text-white'
                   : 'border-line bg-surface text-navy-700 hover:border-primary hover:text-primary'
@@ -166,7 +166,7 @@ export function ContactForm({ defaultType = 'contact' }: { defaultType?: Request
       <button
         type="submit"
         disabled={status === 'submitting'}
-        className="inline-flex items-center justify-center gap-2 rounded-btn bg-primary-btn px-7 py-3.5 text-base font-semibold text-white shadow-soft transition-colors duration-200 hover:bg-primary-btn-hover disabled:pointer-events-none disabled:opacity-50"
+        className="inline-flex items-center justify-center gap-2 rounded-btn bg-primary-btn px-7 py-3.5 text-base font-semibold text-white shadow-soft transition-[background-color,transform] duration-200 hover:bg-primary-btn-hover active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 disabled:active:scale-100"
       >
         {status === 'submitting' ? t('form.submitting') : t('form.submit')}
       </button>

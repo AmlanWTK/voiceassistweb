@@ -59,8 +59,17 @@ export default async function AlbumDetailPage(props: {
       <section className="border-b border-line bg-surface">
         <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6">
           <Reveal>
-            <Link href="/gallery" className="text-sm font-semibold text-primary hover:underline">
-              ← {t('back')}
+            <Link
+              href="/gallery"
+              className="group/back inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
+            >
+              <span
+                aria-hidden="true"
+                className="inline-block transition-transform duration-200 group-hover/back:-translate-x-1"
+              >
+                ←
+              </span>
+              {t('back')}
             </Link>
             {album.eventDate && (
               <p className="mt-6 text-xs font-medium uppercase tracking-widest text-mist-green">

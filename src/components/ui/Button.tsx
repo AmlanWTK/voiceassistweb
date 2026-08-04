@@ -19,7 +19,7 @@ const sizes: Record<Size, string> = {
 }
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-btn font-semibold transition-colors duration-200 disabled:opacity-50 disabled:pointer-events-none'
+  'inline-flex items-center justify-center gap-2 rounded-btn font-semibold transition-[color,background-color,border-color,transform] duration-200 active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none disabled:active:scale-100'
 
 export function Button({
   variant = 'primary',

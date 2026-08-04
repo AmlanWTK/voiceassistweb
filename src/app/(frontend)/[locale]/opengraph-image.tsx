@@ -2,11 +2,11 @@ import { ImageResponse } from 'next/og'
 
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
-export const alt = 'Voice Assistant — Giving every child a voice'
+export const alt = 'Voice Assist — Giving every child a voice'
 
 const COPY = {
-  en: { name: 'Voice Assistant', tagline: 'Giving every child a voice.', org: 'MIST · Department of Biomedical Engineering' },
-  bn: { name: 'ভয়েস অ্যাসিস্ট্যান্ট', tagline: 'প্রতিটি শিশুর কণ্ঠ ফিরিয়ে দিতে।', org: 'মিলিটারি ইনস্টিটিউট অব সায়েন্স অ্যান্ড টেকনোলজি (এমআইএসটি)' },
+  en: { name: 'Voice Assist', tagline: 'Giving every child a voice.', org: 'MIST · Department of Biomedical Engineering' },
+  bn: { name: 'ভয়েস অ্যাসিস্ট', tagline: 'প্রতিটি শিশুর কণ্ঠ ফিরিয়ে দিতে।', org: 'মিলিটারি ইনস্টিটিউট অব সায়েন্স অ্যান্ড টেকনোলজি (এমআইএসটি)' },
 }
 
 /** Default social-share image for every page under a locale, generated at
