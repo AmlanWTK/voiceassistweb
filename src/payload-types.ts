@@ -76,6 +76,7 @@ export interface Config {
     partners: Partner;
     'success-stories': SuccessStory;
     milestones: Milestone;
+    achievements: Achievement;
     publications: Publication;
     'contact-requests': ContactRequest;
     'payload-kv': PayloadKv;
@@ -94,6 +95,7 @@ export interface Config {
     partners: PartnersSelect<false> | PartnersSelect<true>;
     'success-stories': SuccessStoriesSelect<false> | SuccessStoriesSelect<true>;
     milestones: MilestonesSelect<false> | MilestonesSelect<true>;
+    achievements: AchievementsSelect<false> | AchievementsSelect<true>;
     publications: PublicationsSelect<false> | PublicationsSelect<true>;
     'contact-requests': ContactRequestsSelect<false> | ContactRequestsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -414,7 +416,46 @@ export interface Milestone {
   description?: string | null;
   date: string;
   type: 'research' | 'release' | 'outreach' | 'award';
+  /**
+   * Who gave this award, e.g. "ICT Division, Bangladesh". Only shown for Award-type entries — appears alongside this milestone on the Achievements page.
+   */
+  awardingBody?: string | null;
   image?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Highlighted numbers for the public Achievements page (e.g. "50+ Devices Delivered"). For awards/recognition, use the Milestones collection instead — set its Type to "Award".
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements".
+ */
+export interface Achievement {
+  id: number;
+  /**
+   * What the number counts, e.g. "Devices Delivered".
+   */
+  title: string;
+  /**
+   * Just the number, e.g. 50 — no "+" or other symbols here.
+   */
+  value: number;
+  /**
+   * Optional symbol shown automatically right after the number, e.g. "+" turns "50" into "50+" on the page. Leave blank for an exact number.
+   */
+  suffix?: string | null;
+  /**
+   * A sentence or two of context — this is what makes it more than just a homepage counter, e.g. "Delivered across 10 partner schools in and around Dhaka since our first handover."
+   */
+  description?: string | null;
+  /**
+   * Optional — when this milestone was reached, shown under the number if set.
+   */
+  date?: string | null;
+  /**
+   * Lower numbers show first.
+   */
+  displayOrder?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -526,6 +567,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'milestones';
         value: number | Milestone;
+      } | null)
+    | ({
+        relationTo: 'achievements';
+        value: number | Achievement;
       } | null)
     | ({
         relationTo: 'publications';
@@ -760,7 +805,22 @@ export interface MilestonesSelect<T extends boolean = true> {
   description?: T;
   date?: T;
   type?: T;
+  awardingBody?: T;
   image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements_select".
+ */
+export interface AchievementsSelect<T extends boolean = true> {
+  title?: T;
+  value?: T;
+  suffix?: T;
+  description?: T;
+  date?: T;
+  displayOrder?: T;
   updatedAt?: T;
   createdAt?: T;
 }

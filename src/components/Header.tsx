@@ -12,6 +12,8 @@ import { ThemeToggle } from './ThemeToggle'
 const NAV = [
   { href: '/', key: 'home' },
   { href: '/about', key: 'about' },
+  { href: '/journey', key: 'journey' },
+  { href: '/achievements', key: 'achievements' },
   { href: '/app', key: 'app' },
   { href: '/news', key: 'news' },
   { href: '/gallery', key: 'gallery' },
@@ -43,14 +45,14 @@ export function Header() {
         </Link>
 
         {/* Desktop nav */}
-        <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label="Main" className="hidden items-center gap-1 xl:flex">
           {NAV.map(({ href, key }) => (
             <Link
               key={key}
               href={href}
               aria-current={isActive(href) ? 'page' : undefined}
               className={cn(
-                'rounded-btn px-3 py-2 text-sm font-semibold transition-[color,background-color,transform] duration-200 active:scale-95',
+                'whitespace-nowrap rounded-btn px-3 py-2 text-sm font-semibold transition-[color,background-color,transform] duration-200 active:scale-95',
                 isActive(href)
                   ? 'bg-sky-bg text-navy-900'
                   : 'text-navy-700 hover:bg-sky-bg hover:text-navy-900',
@@ -61,7 +63,7 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2.5 lg:flex">
+        <div className="hidden items-center gap-2.5 xl:flex">
           <LanguageToggle />
           <ThemeToggle />
         </div>
@@ -73,7 +75,7 @@ export function Header() {
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={t('menu')}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-btn border border-line text-navy-900 transition-transform duration-200 active:scale-90 lg:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-btn border border-line text-navy-900 transition-transform duration-200 active:scale-90 xl:hidden"
         >
           <svg
             aria-hidden="true"
@@ -96,7 +98,7 @@ export function Header() {
         <nav
           id="mobile-menu"
           aria-label="Main"
-          className="menu-drop border-t border-line bg-surface px-4 pb-6 pt-3 lg:hidden"
+          className="menu-drop border-t border-line bg-surface px-4 pb-6 pt-3 xl:hidden"
         >
           <ul className="flex flex-col gap-1">
             {NAV.map(({ href, key }) => (

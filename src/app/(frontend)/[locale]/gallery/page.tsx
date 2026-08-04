@@ -1,14 +1,19 @@
 import React from 'react'
-import { setRequestLocale, getTranslations, getFormatter } from 'next-intl/server'
+import Image from 'next/image'
+import { setRequestLocale, getTranslations } from 'next-intl/server'
 
 import { getGalleryListData, consentCleared } from '@/lib/cms-gallery'
 import { mediaUrl, mediaAlt, type CmsLocale } from '@/lib/cms'
 import { buildMetadata } from '@/lib/seo'
-import { Card } from '@/components/ui/Card'
-import { AlbumCoverMosaic } from '@/components/ui/AlbumCoverMosaic'
 import { Reveal } from '@/components/ui/Reveal'
-import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Link } from '@/i18n/navigation'
+
+/** Bento-grid column spans (out of 12), repeating every 3 tiles so a wall
+ *  of any length keeps the same rhythm: narrow → wide → medium, then
+ *  mirrored wide → medium → narrow, like the reference layout the user
+ *  provided. Desktop (md+) only — mobile falls back to a plain 2-up grid,
+ *  see the className below. */
+const BENTO_SPANS = ['md:col-span-4', 'md:col-span-5', 'md:col-span-3', 'md:col-span-5', 'md:col-span-4', 'md:col-span-3']
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
   const { locale } = await props.params
@@ -29,9 +34,8 @@ export default async function GalleryPage(props: { params: Promise<{ locale: str
   const { locale } = await props.params
   setRequestLocale(locale)
 
-  const [t, format, data] = await Promise.all([
+  const [t, data] = await Promise.all([
     getTranslations('galleryPage'),
-    getFormatter(),
     getGalleryListData(locale as CmsLocale),
   ])
   const { albums } = data
@@ -60,55 +64,40 @@ export default async function GalleryPage(props: { params: Promise<{ locale: str
             <p className="mt-3 text-ink-soft">{t('empty.body')}</p>
           </Reveal>
         ) : (
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-12 md:auto-rows-[15rem] lg:auto-rows-[17rem]">
             {albums.map((album, i) => {
               const clearedImages = (album.images || []).filter(consentCleared)
-              const coverTiles = clearedImages.slice(0, 4).map((img) => ({
-                id: img.id,
-                url: mediaUrl(img, 'card') || '',
-                alt: mediaAlt(img),
-              }))
+              const cover = clearedImages[0]
+              const coverUrl = mediaUrl(cover, 'card')
               return (
-                <Reveal key={album.id} delay={(i % 6) * 80}>
-                  <Link href={`/gallery/${album.slug}`}>
-                    <Card className="card-hover-lift group flex h-full flex-col overflow-hidden">
-                      <AlbumCoverMosaic images={coverTiles} totalCount={clearedImages.length} />
-                      <div className="flex flex-1 flex-col p-6">
-                        <div className="flex items-start justify-between gap-3">
-                          <h2 className="text-lg font-bold leading-snug hover:text-primary">
-                            {album.title}
-                          </h2>
-                          <span
-                            aria-hidden="true"
-                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-navy-700 shadow-soft transition-transform duration-200 group-hover:translate-y-0.5"
-                          >
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="m6 9 6 6 6-6" />
-                            </svg>
-                          </span>
-                        </div>
-                        <div className="mt-2 flex items-center gap-3 text-xs font-medium text-ink-soft">
-                          {album.eventDate && (
-                            <time>{format.dateTime(new Date(album.eventDate), { dateStyle: 'medium' })}</time>
-                          )}
-                          {clearedImages.length > 0 && (
-                            <span>{t('photoCount', { count: clearedImages.length })}</span>
-                          )}
-                        </div>
-                        {album.description && (
-                          <div className="mt-2 flex-1">
-                            <p className="line-clamp-3 text-sm leading-relaxed text-ink-soft">
-                              {album.description}
-                            </p>
-                            {album.description.length > 140 && (
-                              <span className="mt-1 inline-block text-sm font-semibold text-primary">
-                                {t('seeMore')}
-                              </span>
-                            )}
-                          </div>
-                        )}
+                <Reveal
+                  key={album.id}
+                  delay={(i % 6) * 80}
+                  className={`aspect-square md:aspect-auto ${BENTO_SPANS[i % BENTO_SPANS.length]}`}
+                >
+                  <Link
+                    href={`/gallery/${album.slug}`}
+                    className="group relative block h-full w-full overflow-hidden rounded-card border border-line bg-surface shadow-soft transition-shadow duration-200 hover:shadow-lg"
+                  >
+                    {coverUrl ? (
+                      <Image
+                        src={coverUrl}
+                        alt={mediaAlt(cover) || album.title}
+                        fill
+                        loading="lazy"
+                        sizes="(min-width: 768px) 40vw, 50vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-sky-bg" />
+                    )}
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent">
+                      <div className="p-4 backdrop-blur-sm">
+                        <p className="font-heading text-sm font-bold text-white sm:text-base">
+                          {album.title}
+                        </p>
                       </div>
-                    </Card>
+                    </div>
                   </Link>
                 </Reveal>
               )

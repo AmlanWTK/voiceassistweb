@@ -231,7 +231,7 @@
 /* ---------- Motion system (design guidelines: ≤400ms, ease-out, once) ---------- */
 .reveal {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(28px);
   transition:
     opacity 400ms ease-out,
     transform 400ms ease-out;

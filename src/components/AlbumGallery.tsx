@@ -68,9 +68,17 @@ export function AlbumGallery({ images }: { images: GalleryImage[] }) {
 
   if (images.length === 0) return null
 
+  // Column count adapts to how many photos there actually are, instead of a
+  // fixed 4-up grid — a 1- or 2-photo album now fills the space it's given
+  // (its container is a 50/50 split with the title/description alongside
+  // it) rather than shrinking to one quarter-width cell with empty grid
+  // tracks next to it.
+  const gridCols =
+    images.length === 1 ? 'grid-cols-1' : images.length === 2 ? 'grid-cols-2' : 'grid-cols-2 sm:grid-cols-3'
+
   return (
     <>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+      <div className={`grid gap-4 ${gridCols}`}>
         {images.map((img, i) => (
           <button
             key={img.id}
@@ -80,14 +88,14 @@ export function AlbumGallery({ images }: { images: GalleryImage[] }) {
               setOpenIndex(i)
             }}
             aria-label={t('open', { alt: img.alt })}
-            className="group relative aspect-square overflow-hidden rounded-img border border-line focus-visible:outline-offset-4"
+            className="group relative aspect-square overflow-hidden border border-line focus-visible:outline-offset-4"
           >
             <Image
               src={img.url}
               alt={img.alt}
               fill
               loading="lazy"
-              sizes="(min-width: 768px) 25vw, (min-width: 640px) 33vw, 50vw"
+              sizes="(min-width: 1024px) 48vw, (min-width: 640px) 45vw, 90vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
           </button>
@@ -100,7 +108,7 @@ export function AlbumGallery({ images }: { images: GalleryImage[] }) {
           role="dialog"
           aria-modal="true"
           aria-label={t('label')}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-2 sm:p-4"
           onClick={close}
         >
           <button
@@ -143,7 +151,7 @@ export function AlbumGallery({ images }: { images: GalleryImage[] }) {
             src={images[openIndex].url}
             alt={images[openIndex].alt}
             onClick={(e) => e.stopPropagation()}
-            className="max-h-[85vh] max-w-full rounded-img object-contain shadow-soft"
+            className="max-h-[94vh] max-w-full object-contain shadow-soft"
           />
 
           {images.length > 1 && (

@@ -54,10 +54,36 @@ export default async function AlbumDetailPage(props: {
 
   const videoEmbeds = Array.isArray(album.videoEmbeds) ? album.videoEmbeds : []
 
+  // The title + description sit beside the photo grid (filling the empty
+  // space next to a small number of images) when there are images to show
+  // them alongside. Albums with no images yet (or all pending consent) fall
+  // back to the plain centered hero below, so the copy is never lost.
+  const titleAndDescription = (
+    <>
+      {album.eventDate && (
+        <p className="text-xs font-medium uppercase tracking-widest text-mist-green">
+          {format.dateTime(new Date(album.eventDate), { dateStyle: 'long' })}
+        </p>
+      )}
+      <h1 className="mt-3 text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">{album.title}</h1>
+      {album.description && (
+        <div className="mt-5">
+          <ClampedText
+            text={album.description}
+            lines={8}
+            className="text-lg leading-relaxed text-ink-soft sm:text-xl"
+            moreLabel={t('seeMore')}
+            lessLabel={t('seeLess')}
+          />
+        </div>
+      )}
+    </>
+  )
+
   return (
     <div>
       <section className="border-b border-line bg-surface">
-        <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6">
+        <div className="mx-auto max-w-3xl px-4 py-10 text-center sm:px-6">
           <Reveal>
             <Link
               href="/gallery"
@@ -71,22 +97,8 @@ export default async function AlbumDetailPage(props: {
               </span>
               {t('back')}
             </Link>
-            {album.eventDate && (
-              <p className="mt-6 text-xs font-medium uppercase tracking-widest text-mist-green">
-                {format.dateTime(new Date(album.eventDate), { dateStyle: 'long' })}
-              </p>
-            )}
-            <h1 className="mt-3 text-3xl font-bold leading-tight sm:text-4xl">{album.title}</h1>
-            {album.description && (
-              <div className="mx-auto mt-4 max-w-2xl text-left">
-                <ClampedText
-                  text={album.description}
-                  lines={5}
-                  className="text-lg leading-relaxed text-ink-soft"
-                  moreLabel={t('seeMore')}
-                  lessLabel={t('seeLess')}
-                />
-              </div>
+            {images.length === 0 && (
+              <div className="mt-6 text-left sm:text-center">{titleAndDescription}</div>
             )}
           </Reveal>
         </div>
@@ -94,9 +106,18 @@ export default async function AlbumDetailPage(props: {
 
       {images.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <Reveal>
-            <AlbumGallery images={images} />
-          </Reveal>
+          {/* Image column modestly wider than the text column (subtle 55/45
+              asymmetry, not a dramatic split) with lg:items-start so the
+              title lines up with the top edge of the image rather than
+              floating at vertical center. */}
+          <div className="grid gap-10 lg:grid-cols-[11fr_9fr] lg:items-start">
+            <Reveal>
+              <AlbumGallery images={images} />
+            </Reveal>
+            <Reveal className="text-left">
+              <div className="lg:sticky lg:top-24">{titleAndDescription}</div>
+            </Reveal>
+          </div>
         </section>
       )}
 

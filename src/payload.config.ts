@@ -17,6 +17,7 @@ import { TeamMembers } from './collections/TeamMembers'
 import { Partners } from './collections/Partners'
 import { SuccessStories } from './collections/SuccessStories'
 import { Milestones } from './collections/Milestones'
+import { Achievements } from './collections/Achievements'
 import { Publications } from './collections/Publications'
 import { ContactRequests } from './collections/ContactRequests'
 import { HomePage } from './globals/HomePage'
@@ -75,6 +76,7 @@ export default buildConfig({
     Partners,
     SuccessStories,
     Milestones,
+    Achievements,
     Publications,
     ContactRequests,
   ],

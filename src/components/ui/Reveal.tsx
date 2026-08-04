@@ -39,8 +39,11 @@ export function Reveal({
           }
         })
       },
-      // Trigger slightly before the element enters the viewport
-      { threshold: 0.05, rootMargin: '0px 0px 15% 0px' },
+      // Trigger once the element has actually started entering the
+      // viewport (a small negative bottom margin) rather than well before
+      // it — so the rise-and-fade is still playing out as it scrolls into
+      // view, instead of finishing before the user ever sees it move.
+      { threshold: 0.1, rootMargin: '0px 0px -10% 0px' },
     )
     io.observe(el)
     // Fail-safe: content must never stay hidden (slow devices, odd

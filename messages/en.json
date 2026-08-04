@@ -14,7 +14,9 @@
     "gallery": "Gallery",
     "contact": "Contact",
     "skipToContent": "Skip to content",
-    "menu": "Menu"
+    "menu": "Menu",
+    "achievements": "Achievements",
+    "journey": "Journey"
   },
   "footer": {
     "affiliation": "A project of the Department of Biomedical Engineering, Military Institute of Science and Technology (MIST)",
@@ -135,7 +137,8 @@
     },
     "timeline": {
       "eyebrow": "Our journey",
-      "title": "How we got here"
+      "title": "How we got here",
+      "viewAll": "See our full journey"
     },
     "acknowledgments": {
       "eyebrow": "Acknowledgments"
@@ -349,6 +352,36 @@
         "title": "Contact us",
         "body": "Questions about this policy, or requests about your own information, are welcome any time — reach us through our Contact page, or directly through the Department of Biomedical Engineering, MIST."
       }
+    }
+  },
+  "achievementsPage": {
+    "hero": {
+      "eyebrow": "Achievements",
+      "title": "What we've reached so far",
+      "lede": "Every number here represents children who can now say what they need — and every award reflects the people who backed this project along the way."
+    },
+    "numbers": {
+      "eyebrow": "By the numbers",
+      "title": "Our impact so far"
+    },
+    "awards": {
+      "eyebrow": "Recognition",
+      "title": "Awards & recognition"
+    },
+    "empty": {
+      "title": "Nothing published yet",
+      "body": "We're just getting started — check back soon as we add our first achievements and recognitions."
+    }
+  },
+  "journeyPage": {
+    "hero": {
+      "eyebrow": "Our journey",
+      "title": "How we got here",
+      "lede": "From a research question at MIST's Department of Biomedical Engineering to devices in children's hands — this is the story so far."
+    },
+    "empty": {
+      "title": "Our story is just beginning",
+      "body": "Check back soon as we add the milestones behind Voice Assist."
     }
   }
 }

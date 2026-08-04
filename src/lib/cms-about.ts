@@ -21,10 +21,12 @@ export async function getAboutData(locale: CmsLocale) {
           .then((r) => r.docs),
       [],
     ),
+    // Teaser only — the full timeline lives on its own page (/journey);
+    // see cms-journey.ts's getJourneyData for the unlimited version.
     safe(
       () =>
         payload
-          .find({ collection: 'milestones', locale, depth: 0, limit: 10, sort: 'date' })
+          .find({ collection: 'milestones', locale, depth: 0, limit: 4, sort: 'date' })
           .then((r) => r.docs),
       [],
     ),

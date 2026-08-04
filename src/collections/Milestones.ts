@@ -39,6 +39,17 @@ export const Milestones: CollectionConfig = {
       ],
       admin: { position: 'sidebar' },
     },
+    {
+      name: 'awardingBody',
+      type: 'text',
+      localized: true,
+      admin: {
+        position: 'sidebar',
+        condition: (_, siblingData) => siblingData?.type === 'award',
+        description:
+          'Who gave this award, e.g. "ICT Division, Bangladesh". Only shown for Award-type entries — appears alongside this milestone on the Achievements page.',
+      },
+    },
     { name: 'image', type: 'upload', relationTo: 'media' },
   ],
 }

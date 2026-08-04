@@ -4,7 +4,17 @@ import { getPayloadSafe } from '@/lib/cms'
 import { SITE_URL } from '@/lib/seo'
 import { routing } from '@/i18n/routing'
 
-const STATIC_PATHS = ['', '/about', '/app', '/news', '/gallery', '/contact', '/privacy']
+const STATIC_PATHS = [
+  '',
+  '/about',
+  '/journey',
+  '/achievements',
+  '/app',
+  '/news',
+  '/gallery',
+  '/contact',
+  '/privacy',
+]
 
 const alternatesFor = (path: string) => {
   const languages: Record<string, string> = {}

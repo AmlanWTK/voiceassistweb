@@ -9,6 +9,7 @@ import { buildMetadata } from '@/lib/seo'
 import { Reveal } from '@/components/ui/Reveal'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { TimelineItem } from '@/components/ui/TimelineItem'
+import { Link } from '@/i18n/navigation'
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
   const { locale } = await props.params
@@ -159,6 +160,20 @@ export default async function AboutPage(props: { params: Promise<{ locale: strin
                   />
                 ))}
               </ol>
+            </Reveal>
+            <Reveal className="mt-8 text-center">
+              <Link
+                href="/journey"
+                className="group/link inline-flex items-center gap-1 font-semibold text-primary hover:underline"
+              >
+                {t('timeline.viewAll')}
+                <span
+                  aria-hidden="true"
+                  className="inline-block transition-transform duration-200 group-hover/link:translate-x-1"
+                >
+                  →
+                </span>
+              </Link>
             </Reveal>
           </div>
         </section>

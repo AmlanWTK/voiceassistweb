@@ -38,6 +38,8 @@ export async function Footer() {
               [
                 ['/', 'home'],
                 ['/about', 'about'],
+                ['/journey', 'journey'],
+                ['/achievements', 'achievements'],
                 ['/app', 'app'],
                 ['/news', 'news'],
                 ['/gallery', 'gallery'],
